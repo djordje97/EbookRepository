@@ -21,7 +21,6 @@ namespace EBookStore.Model
         [StringLength(10)]
         public string Username { get; set; }
         [Required]
-        [StringLength(10)]
         public string Password { get; set; }
         [Required]
         [StringLength(30)]

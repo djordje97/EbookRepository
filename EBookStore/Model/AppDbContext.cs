@@ -22,10 +22,14 @@ namespace EBookStore.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var hasher = new PasswordHasher<User>();
+           
             modelBuilder.Entity<Category>().HasData(
                 new Category() { CategoryId=1,Name="Comedy"});
             modelBuilder.Entity<User>().HasData(
-                new User() {UserId=1,Firstname="Marko",Lastname="Markovic",Username="marko",Password="123",Type="Admin",CategoryId=1 });
+                new User() {UserId=1,Firstname="Marko",Lastname="Markovic",Username="marko",Password=hasher.HashPassword(null,"123"),Type="Admin",CategoryId=1 },
+                new User() { UserId = 2, Firstname = "Darko", Lastname = "Stankic", Username = "darko", Password = hasher.HashPassword(null, "123"), Type = "User", CategoryId = 1 }
+                );
            
             modelBuilder.Entity<Language>().HasData(new Language() { LanguageId = 1, Name = "Serbian" });
         }

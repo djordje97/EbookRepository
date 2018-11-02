@@ -6,8 +6,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using EBookStore.Dto;
+using EBookStore.Model;
 using EBookStore.Repository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -28,21 +30,26 @@ namespace EBookStore.Controllers
         [HttpPost, Route("login")]
         public IActionResult Login([FromBody]LoginModel user)
         {
+            var hasher = new PasswordHasher<User>();
             if (user == null)
             {
                 return BadRequest("Invalid client request");
             }
             var userFromDb = _userRepository.GetByUsername(user.Username);
-
-            if (userFromDb != null && userFromDb.Password == user.Password)
+            var isVerify=hasher.VerifyHashedPassword(null, userFromDb.Password, user.Password);
+            if (userFromDb != null && isVerify == PasswordVerificationResult.Success)
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@3"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature);
-
+                var claims = new List<Claim>();
+                if (userFromDb.Type == "Admin")
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                else
+                    claims.Add(new Claim(ClaimTypes.Role, "User"));
                 var tokeOptions = new JwtSecurityToken(
                     issuer: "mysite.com",
                     audience: "mysite.com",
-                    claims: new List<Claim>(),
+                    claims:claims,
                     expires: DateTime.Now.AddHours(5),
                     signingCredentials: signinCredentials
                 );
