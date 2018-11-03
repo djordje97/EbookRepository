@@ -5,9 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using EBookStore.Dto;
 using EBookStore.Model;
 using EBookStore.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +23,11 @@ namespace EBookStore.Controllers
     {
 
         private readonly UserRepository _userRepository;
-
-        public AuthController(UserRepository userRepository)
+        private readonly IMapper _mapper;
+        public AuthController(UserRepository userRepository,IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpPost, Route("login")]
@@ -46,6 +49,7 @@ namespace EBookStore.Controllers
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                 else
                     claims.Add(new Claim(ClaimTypes.Role, "User"));
+                claims.Add(new Claim(ClaimTypes.Name, userFromDb.Username));
                 var tokeOptions = new JwtSecurityToken(
                     issuer: "mysite.com",
                     audience: "mysite.com",
@@ -53,7 +57,7 @@ namespace EBookStore.Controllers
                     expires: DateTime.Now.AddHours(5),
                     signingCredentials: signinCredentials
                 );
-
+                
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                 return Ok(new { token = tokenString });
             }
@@ -61,6 +65,17 @@ namespace EBookStore.Controllers
             {
                 return Unauthorized();
             }
+        }
+
+        [HttpGet,Route("logged")]
+        [Authorize]
+        public IActionResult GetLogged()
+        {
+            var username = User.Identity.Name;
+            var user = _userRepository.GetByUsername(username);
+            if (user != null)
+                return Ok(_mapper.Map<UserDto>(user));
+            return NotFound();
         }
     }
 }
