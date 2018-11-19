@@ -1,0 +1,13 @@
+.form-inline{
+    margin-right: 10%;
+}
+.nav-item >.nav-link{
+    color: white;
+    opacity: 0.8;
+    margin: 1%;
+    
+}
+.nav-item >.nav-link:hover{
+    opacity: 1;
+    border-bottom: 1px solid #5bc0de;
+}
