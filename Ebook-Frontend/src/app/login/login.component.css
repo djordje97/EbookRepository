@@ -8,3 +8,10 @@
 a{
     text-decoration: none;
 }
+.form{
+    width: 100%;
+  }
+  
+  .form-field{
+    width: 50%;
+}

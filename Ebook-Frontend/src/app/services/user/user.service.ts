@@ -8,12 +8,9 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
   url="http://localhost:12621/api/"
-  login(username:string,password:string){
-    let body={
-      'username':username,
-      'password':password
-    };
-    return this.http.post(this.url+"auth/login",body)
+  login(user){
+ 
+    return this.http.post(this.url+"auth/login",user)
   }
 
   register(user){

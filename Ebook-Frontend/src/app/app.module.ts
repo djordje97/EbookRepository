@@ -13,6 +13,7 @@ import{HttpClientModule} from '@angular/common/http'
 import { BookService } from './services/book/book.service';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {MatButtonModule,MatInputModule} from '@angular/material';
+import { CategoryComponent } from './category/category.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {MatButtonModule,MatInputModule} from '@angular/material';
     HomeComponent,
     NavComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

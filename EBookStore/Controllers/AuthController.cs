@@ -34,11 +34,12 @@ namespace EBookStore.Controllers
         public IActionResult Login([FromBody]LoginModel user)
         {
             var hasher = new PasswordHasher<User>();
-            if (user == null)
+            var userFromDb = _userRepository.GetByUsername(user.Username);
+            if (userFromDb == null)
             {
                 return BadRequest("Invalid client request");
             }
-            var userFromDb = _userRepository.GetByUsername(user.Username);
+            
             var isVerify=hasher.VerifyHashedPassword(null, userFromDb.Password, user.Password);
             if (userFromDb != null && isVerify == PasswordVerificationResult.Success)
             {

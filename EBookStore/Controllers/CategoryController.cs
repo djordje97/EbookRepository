@@ -6,6 +6,7 @@ using AutoMapper;
 using EBookStore.Dto;
 using EBookStore.Model;
 using EBookStore.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +26,15 @@ namespace EBookStore.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetCategories()
         {
             var categories = _categoryRepository.GetAll();
             var categoryDtos = new List<CategoryDto>();
             foreach (var category in categories)
             {
+                if (category.CategoryId == 1)
+                    continue;
                 categoryDtos.Add(_mapper.Map<CategoryDto>(category));
 
             }

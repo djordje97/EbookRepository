@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
+import { CategoryService } from '../services/category/category.service';
 
 @Component({
   selector: 'app-nav',
@@ -8,9 +9,13 @@ import { RouterLink, Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
   token=localStorage.getItem("token");
-  constructor(private router:Router) { }
+  categories;
+  constructor(private router:Router,private categoryService:CategoryService) { }
 
   ngOnInit() {
+    this.categoryService.getAllCategories().subscribe(response =>{
+        this.categories=response;
+    });
   }
 
   logout(){
