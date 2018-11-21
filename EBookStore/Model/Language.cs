@@ -8,6 +8,7 @@ namespace EBookStore.Model
 {
     public class Language
     {
+        [Key]
         public int LanguageId { get; set; }
         [Required]
         [StringLength(30)]

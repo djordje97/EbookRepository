@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EBookStore.Mappings
 {
-    public class SimpleMappings:Profile
+    public class SimpleMappings : Profile
     {
         public SimpleMappings()
         {

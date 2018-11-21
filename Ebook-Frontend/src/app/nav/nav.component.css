@@ -5,6 +5,7 @@
     color: white;
     opacity: 0.8;
     margin: 1%;
+    cursor: pointer;
     
 }
 .nav-item >.nav-link:hover{

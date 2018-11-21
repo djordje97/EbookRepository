@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EBookStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20181102213139_SeedDataa")]
-    partial class SeedDataa
+    [Migration("20181121153721_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,6 @@ namespace EBookStore.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new { CategoryId = 1, Name = "Comedy" }
-                    );
                 });
 
             modelBuilder.Entity("EBookStore.Model.Ebook", b =>
@@ -94,10 +90,6 @@ namespace EBookStore.Migrations
                     b.HasKey("LanguageId");
 
                     b.ToTable("Languages");
-
-                    b.HasData(
-                        new { LanguageId = 1, Name = "Serbian" }
-                    );
                 });
 
             modelBuilder.Entity("EBookStore.Model.User", b =>
@@ -132,11 +124,6 @@ namespace EBookStore.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new { UserId = 1, CategoryId = 1, Firstname = "Marko", Lastname = "Markovic", Password = "AQAAAAEAACcQAAAAEHW+Ld3xxYOGBJt8cIFvrOyMJlnRE4RCjGlYMHuVQXZyoxin5ZlWSVAOeNlwgPNtuw==", Type = "Admin", Username = "marko" },
-                        new { UserId = 2, CategoryId = 1, Firstname = "Darko", Lastname = "Stankic", Password = "AQAAAAEAACcQAAAAECQNK447tZzsRB2TLklc6vEmyPFovgOEMrpl7nKBLPLndi3zKKFRwhQEEdgmeEAMzA==", Type = "User", Username = "darko" }
-                    );
                 });
 
             modelBuilder.Entity("EBookStore.Model.Ebook", b =>

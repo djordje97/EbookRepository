@@ -1,0 +1,14 @@
+.container-fluid{
+    margin-top: 5%;
+}
+.btn-primary{
+    margin-left: 2%;
+    margin-top: 2%;
+}
+.form{
+    width: 100%;
+  }
+  
+  .form-field{
+    width: 50%;
+}

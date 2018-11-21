@@ -42,7 +42,7 @@ namespace EBookStore.Migrations
                     Firstname = table.Column<string>(maxLength: 30, nullable: false),
                     Lastname = table.Column<string>(maxLength: 30, nullable: false),
                     Username = table.Column<string>(maxLength: 10, nullable: false),
-                    Password = table.Column<string>(maxLength: 10, nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     Type = table.Column<string>(maxLength: 30, nullable: false),
                     CategoryId = table.Column<int>(nullable: false)
                 },
@@ -54,7 +54,7 @@ namespace EBookStore.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,11 +95,6 @@ namespace EBookStore.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.NoAction);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Languages",
-                columns: new[] { "LanguageId", "Name" },
-                values: new object[] { 1, "Serbian" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ebooks_CategoryId",

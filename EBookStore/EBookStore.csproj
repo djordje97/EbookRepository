@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20181102195234_SeedData.cs" />
-    <Compile Remove="Migrations\20181102195234_SeedData.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Lucene\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

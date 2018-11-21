@@ -6,7 +6,9 @@ using AutoMapper;
 using EBookStore.Dto;
 using EBookStore.Model;
 using EBookStore.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EBookStore.Controllers
@@ -48,11 +50,15 @@ namespace EBookStore.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult AddUser([FromBody]UserDto userDto)
         {
+            var hasher = new PasswordHasher<User>();
             if (userDto == null)
                 return BadRequest();
             var user = _mapper.Map<User>(userDto);
+            user.Type = "User";
+            user.Password = hasher.HashPassword(null, userDto.Password);
             user = _userRepository.Save(user);
             _userRepository.Complete();
 

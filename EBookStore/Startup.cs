@@ -65,7 +65,8 @@ namespace EBookStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }   
+            }
+           app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
             app.UseAuthentication();
             app.UseMvc();
            

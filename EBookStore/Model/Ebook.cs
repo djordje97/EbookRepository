@@ -8,6 +8,7 @@ namespace EBookStore.Model
 {
     public class Ebook
     {
+        [Key]
         public int EbookId { get; set; }
         [Required]
         [StringLength(80)]
