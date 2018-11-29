@@ -18,11 +18,11 @@ namespace EBookStore.Controllers
 
         private readonly EbookRepository _ebookRepository;
         IMapper _mapper;
-
         public EbookController(EbookRepository ebookRepository, IMapper mapper)
         {
             _ebookRepository = ebookRepository;
             _mapper = mapper;
+            
         }
 
         [HttpGet]
