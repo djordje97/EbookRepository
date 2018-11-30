@@ -12,8 +12,13 @@ import { UserService } from './services/user/user.service';
 import{HttpClientModule} from '@angular/common/http'
 import { BookService } from './services/book/book.service';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
-import {MatButtonModule,MatInputModule} from '@angular/material';
+import {MatButtonModule,MatInputModule,MatSelectModule,MatDialogModule} from '@angular/material';
 import { CategoryComponent } from './category/category.component';
+import { SearchComponent } from './search/search.component';
+import { CategoryManagmentComponent } from './category-managment/category-managment.component';
+import { UserManagmentComponent } from './user-managment/user-managment.component';
+import { BookManagmentComponent } from './book-managment/book-managment.component';
+import { DialogComponent } from './user-managment/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +27,12 @@ import { CategoryComponent } from './category/category.component';
     NavComponent,
     LoginComponent,
     RegisterComponent,
-    CategoryComponent
+    CategoryComponent,
+    SearchComponent,
+    CategoryManagmentComponent,
+    UserManagmentComponent,
+    BookManagmentComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,8 +42,11 @@ import { CategoryComponent } from './category/category.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatInputModule,
+    MatSelectModule,
+    MatDialogModule,
   ],
   providers: [UserService,BookService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[DialogComponent]
 })
 export class AppModule { }

@@ -18,8 +18,8 @@ namespace EBookStore.Controllers
         [AllowAnonymous]
         public IActionResult IndexFile()
         {
-            var path =
-            return Ok(path);
+            
+            return Ok();
         }
     }
 }

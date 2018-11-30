@@ -43,6 +43,9 @@ namespace EBookStore.Lucene
             document.Add(new StringField("filename",unit.Filename, Field.Store.YES));
             document.Add(new TextField("text", unit.Text, Field.Store.NO));
             document.Add(new TextField("filedate", unit.FileDate, Field.Store.YES));
+            document.Add(new TextField("author", unit.Author, Field.Store.YES));
+            document.Add(new TextField("category", unit.Category, Field.Store.YES));
+            document.Add(new TextField("language", unit.Language, Field.Store.YES));
             indexWriter.AddDocument(document);
             indexWriter.Commit();
 
@@ -74,10 +77,11 @@ namespace EBookStore.Lucene
                 pdf.close();
 
                 unit.FileDate = DateTools.DateToString(new DateTime(file.lastModified()), DateTools.Resolution.DAY);
+                return unit;
             }
-            catch (Exception){ System.Console.Out.WriteLine("Greska prilikom obrade PDF fajla"); }
+            catch (Exception){ System.Console.Out.WriteLine("Greska prilikom obrade PDF fajla"); return null; }
 
-            return unit;
+            
         }
 
 
@@ -92,6 +96,7 @@ namespace EBookStore.Lucene
             }
             catch (IOException e)
             {
+                System.Console.Out.WriteLine("Greska: " + e.getMessage() + " na ovom mestu " + e.getStackTrace());
                 return false;
             }
         }
@@ -133,17 +138,19 @@ namespace EBookStore.Lucene
                         }
                         catch (IOException e)
                         {
-                            throw new Exception("Greska: " + e.getMessage()+" na ovom mestu "+e.getStackTrace());
+                           System.Console.Out.WriteLine("Greska: " + e.getMessage()+" na ovom mestu "+e.getStackTrace());
+                            return false;
                         }
                     }
                 }
 
-                return false;
 
+                return false;
             }
             catch (IOException e)
             {
-                throw new Exception("Greska: " + e.getMessage() + " na ovom mestu " + e.getStackTrace());
+                System.Console.Out.WriteLine("Greska: " + e.getMessage() + " na ovom mestu " + e.getStackTrace());
+                return false;
             }
         }
     }

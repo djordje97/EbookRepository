@@ -16,6 +16,7 @@ user={
 };
 someError=false;
 message=false;
+
   ngOnInit() {
   }
 
@@ -23,8 +24,14 @@ message=false;
     if(this.user.username != "" && this.user.password!= "")
     {
       this.userService.login(this.user).subscribe(response =>{
-        localStorage.setItem("token",JSON.stringify(response),);
-        this.router.navigate(['/home']);
+        this.userService.getLogged(response).subscribe(data =>{
+          localStorage.setItem("logged",JSON.stringify(data));
+          localStorage.setItem("token",JSON.stringify(response),);
+        });
+        
+        setTimeout(()=>{
+          this.router.navigate(['/home']);
+        },1000);
       },error =>{
         this.someError=true;
       });

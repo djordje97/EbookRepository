@@ -1,0 +1,15 @@
+<app-nav></app-nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3" *ngFor="let user of userList">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{user.firstname}} {{user.lastname}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{user.username}}</h6>
+                    <button href="#" class="btn btn-warning" name="{{user.username}}">Edit</button>
+                    <button href="#" class="btn btn-danger"  name="{{user.username}}" (click)="deleteUser($event)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

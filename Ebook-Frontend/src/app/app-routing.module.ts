@@ -4,6 +4,10 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { CategoryComponent } from './category/category.component';
+import { SearchComponent } from './search/search.component';
+import { UserManagmentComponent } from './user-managment/user-managment.component';
+import { CategoryManagmentComponent } from './category-managment/category-managment.component';
+import { BookManagmentComponent } from './book-managment/book-managment.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home' ,pathMatch: 'full'},
@@ -11,6 +15,10 @@ const routes: Routes = [
   {path:'login',component:LoginComponent},
   {path:'register',component:RegisterComponent},
   {path:'category/:id',component:CategoryComponent},
+  {path:'search',component:SearchComponent},
+  {path:'manage/users',component:UserManagmentComponent},
+  {path:'manage/categories',component:CategoryManagmentComponent},
+  {path:'manage/books',component:BookManagmentComponent},
 ];
 
 @NgModule({

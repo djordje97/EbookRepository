@@ -28,6 +28,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpGet]
+        [Authorize (Roles ="Admin")]
         public IActionResult GetUsers()
         {
             var users = _userRepository.GetAll();

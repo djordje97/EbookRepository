@@ -9,7 +9,11 @@ export class CategoryService {
   url="http://localhost:12621/api/";
   constructor(private http:HttpClient) { }
 
-  getAllCategories(){
+  getCategories():any{
     return this.http.get(this.url+"category");
+  }
+
+  getAllCategories():any{
+    return this.http.get(this.url+"category/all");
   }
 }

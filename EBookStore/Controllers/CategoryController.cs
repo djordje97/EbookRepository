@@ -41,6 +41,20 @@ namespace EBookStore.Controllers
             return Ok(categoryDtos);
         }
 
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public IActionResult GetAllCategories()
+        {
+            var categories = _categoryRepository.GetAll();
+            var categoryDtos = new List<CategoryDto>();
+            foreach (var category in categories)
+            {
+                categoryDtos.Add(_mapper.Map<CategoryDto>(category));
+
+            }
+            return Ok(categoryDtos);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetCategory(int id)
         {
