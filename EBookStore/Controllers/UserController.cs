@@ -42,6 +42,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpGet("{username}")]
+        [Authorize]
         public IActionResult GetUser(string username)
         {
             var user = _userRepository.GetByUsername(username);
@@ -67,6 +68,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpPut("{username}")]
+        [Authorize]
         public IActionResult UpdateUser(string username, [FromBody] UserDto userDto)
         {
             if (userDto == null)
@@ -83,6 +85,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpDelete("{username}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(string username)
         {
             var userFromDb = _userRepository.GetByUsername(username);

@@ -1,8 +1,12 @@
-<h2 mat-dialog-title>Delete user</h2>
+<h2 mat-dialog-title>{{data.title}}</h2>
 <mat-dialog-content class="mat-typography">
-  <h3>Are you realy want to delete this user</h3>
+  <h3>{{data.content}}</h3>
+  <mat-form-field *ngIf="data.isCategoryAdd == true">
+      <input matInput [(ngModel)]="data.category.name" placeholder="Enter category name" required>
+    </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button class="btn btn-primary" [mat-dialog-close]="false">Cancel</button>
-  <button mat-button class="btn btn-danger" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+  <button mat-button *ngIf="data.isCategoryAdd != true" class="btn btn-danger" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+  <button *ngIf="data.isCategoryAdd == true" mat-button class="btn btn-success" [mat-dialog-close]="data.category.name"  cdkFocusInitial>Add</button>
 </mat-dialog-actions>

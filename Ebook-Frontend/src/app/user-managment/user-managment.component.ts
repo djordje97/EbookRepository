@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DialogComponent } from './dialog/dialog.component';
 
 @Component({
@@ -21,11 +21,16 @@ export class UserManagmentComponent implements OnInit {
 
   deleteUser(event){
     var username=event.target.name;
-   const dialogRef=this.dialog.open(DialogComponent);
+   const dialogConfig=new MatDialogConfig();
+   dialogConfig.data={
+     title:'Delete user',
+     content:'Are you realy want to delete this user'
+   };
+   const dialogRef=this.dialog.open(DialogComponent,dialogConfig);
    dialogRef.afterClosed().subscribe(result =>{
     if(result == true)
       this.userService.deleteUser(username).subscribe(data=>{
-
+        window.location.reload(true);
       });
    });
   }

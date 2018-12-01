@@ -60,7 +60,6 @@ export class UserService {
   }
 
   deleteUser(username):any{
-      console.log(username);
     var head;
     var tokenObject=JSON.parse(localStorage.getItem("token"));
     if(tokenObject){

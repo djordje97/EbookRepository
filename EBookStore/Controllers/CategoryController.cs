@@ -56,6 +56,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetCategory(int id)
         {
             var category = _categoryRepository.GetOne(id);
@@ -65,6 +66,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddCategory([FromBody]CategoryDto categoryDto)
         {
             if (categoryDto == null)
@@ -77,6 +79,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
         {
             if (categoryDto == null)
@@ -91,6 +94,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteCategory(int id)
         {
             var categoryFromDb = _categoryRepository.GetOne(id);

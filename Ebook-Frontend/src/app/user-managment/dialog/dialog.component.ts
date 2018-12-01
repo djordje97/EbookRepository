@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-dialog',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DialogComponent implements OnInit {
 
-  constructor() { }
+  title;
+  isCategoryAdd
+  content;
+  data;
+  constructor( @Inject(MAT_DIALOG_DATA) dialogData) {
+    this.data=dialogData;
+    console.log(this.data);
+   }
 
+  
   ngOnInit() {
+
   }
 
 }
