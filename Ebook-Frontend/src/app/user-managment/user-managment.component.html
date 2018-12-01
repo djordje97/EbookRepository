@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{user.firstname}} {{user.lastname}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{user.username}}</h6>
-                    <button href="#" class="btn btn-warning" name="{{user.username}}">Edit</button>
+                    <button href="#" class="btn btn-warning"  [routerLink]="['/edit/user',user.username]">Edit</button>
                     <button href="#" class="btn btn-danger"  name="{{user.username}}" (click)="deleteUser($event)">Delete</button>
                 </div>
             </div>

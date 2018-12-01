@@ -18,7 +18,23 @@ export class UserService {
     return this.http.post(this.url+"/user",user);
   }
   getUser(username):any{
-   return this.http.get(this.url+"user/"+username);
+      const tokenObject=JSON.parse(localStorage.getItem("token"));
+    var head;
+    if(tokenObject.token){
+      head={
+          "Authorization": "Bearer " + tokenObject.token,
+          'Content-Type': 'application/json'
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+
+   return this.http.get(this.url+"user/"+username,{headers:httpOptions.header});
   }
   getLogged(tokenObject):any{
     var head;
@@ -78,5 +94,25 @@ export class UserService {
       let finalUrl=this.url+"user/"+username;
       console.log(finalUrl);
       return this.http.delete(finalUrl,{headers:httpOptions.header});
+  }
+
+  editUser(user,username):any{
+    var head;
+    var tokenObject=JSON.parse(localStorage.getItem("token"));
+    if(tokenObject){
+      head={
+          "Authorization": "Bearer " +tokenObject.token,
+          'Content-Type': 'application/json'
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+      let finalUrl=this.url+"user/"+username;
+      return this.http.put(finalUrl,user,{headers:httpOptions.header});
   }
 }

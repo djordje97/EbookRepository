@@ -1,0 +1,47 @@
+<app-nav></app-nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-8">
+      <form class="form" name="form" #f="ngForm">
+        <div class="form-group">
+          <mat-form-field class="form-field">
+            <input matInput type="text" placeholder="Enter your firstname"  name="firstname"
+              #firstname="ngModel" [(ngModel)]="user.firstname" required>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field class="form-field">
+            <input matInput type="text" placeholder="Enter your lastname"  name="lastname" #lastname="ngModel"
+              [(ngModel)]="user.lastname" required>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field class="form-field">
+            <input matInput type="text" placeholder="Enter your username" name="username" #username="ngModel"
+              [(ngModel)]="user.username" required readonly>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field class="form-field">
+            <input matInput type="password" name="password" #password="ngModel"  [(ngModel)]="user.password"
+              required placeholder="Enter your password">
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field class="form-field">
+            <input matInput type="password" name="confirmPassword" #confirmPassword="ngModel" [(ngModel)]="confirmPassword.password" (keyup)="matchPassword($event)" required placeholder="Confirm your password">
+          </mat-form-field>
+        </div>
+        <mat-error *ngIf="dontMatchError == true">
+          Passwords don't match!
+        </mat-error>
+        <mat-error *ngIf="otherError == true">
+          Something wrong ,please try again!
+        </mat-error>
+        <button mat-raised-button color="primary" (click)="edit()" [disabled]="!f.valid" style="margin-left: 10%;margin-top: 2%;">Edit</button>
+      </form>
+    </div>
+  </div>
+</div>

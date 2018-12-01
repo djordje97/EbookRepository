@@ -4,3 +4,7 @@
 .btn{
     margin: 3%;
 }
+a{
+    text-decoration: none;
+    color: white;
+}

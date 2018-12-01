@@ -48,6 +48,7 @@ namespace EBookStore.Controllers
             var user = _userRepository.GetByUsername(username);
             if (user == null)
                 return NotFound();
+            user.Password = "";
             return Ok(_mapper.Map<UserDto>(user));
         }
 
@@ -71,6 +72,7 @@ namespace EBookStore.Controllers
         [Authorize]
         public IActionResult UpdateUser(string username, [FromBody] UserDto userDto)
         {
+            var hasher = new PasswordHasher<User>();
             if (userDto == null)
                 return BadRequest();
             var userFromDb = _userRepository.GetByUsername(username);
@@ -78,7 +80,7 @@ namespace EBookStore.Controllers
                 return BadRequest();
             userFromDb.Firstname = userDto.Firstname;
             userFromDb.Lastname = userFromDb.Lastname;
-            userFromDb.Type = userDto.Type;
+            userFromDb.Password = hasher.HashPassword(null, userDto.Password);
             userFromDb = _userRepository.Update(userFromDb);
             _userRepository.Complete();
             return Ok(_mapper.Map<UserDto>(userFromDb));

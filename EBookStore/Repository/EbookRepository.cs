@@ -8,6 +8,6 @@ namespace EBookStore.Repository
 {
     public interface EbookRepository:IRepository<Ebook>
     {
-
+        List<Ebook> GetEbooksByCategory(int categoryId);
     }
 }

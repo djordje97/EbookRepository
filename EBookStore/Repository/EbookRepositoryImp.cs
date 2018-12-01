@@ -12,7 +12,12 @@ namespace EBookStore.Repository
         private AppDbContext context;
         public EbookRepositoryImp(AppDbContext dbContext):base(dbContext)
         {
-          
+            context = dbContext;
+        }
+
+        public List<Ebook> GetEbooksByCategory(int categoryId)
+        {
+            return context.Ebooks.Where(x => x.CategoryId == categoryId).ToList();
         }
     }
 }

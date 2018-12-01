@@ -17,11 +17,13 @@ namespace EBookStore.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly CategoryRepository _categoryRepository;
+        private readonly EbookRepository _ebookRepository;
         IMapper _mapper;
 
-        public CategoryController(CategoryRepository categoryRepository,IMapper mapper)
+        public CategoryController(CategoryRepository categoryRepository,EbookRepository ebookRepository,IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _ebookRepository = ebookRepository;
             _mapper = mapper;
         }
 
@@ -100,8 +102,15 @@ namespace EBookStore.Controllers
             var categoryFromDb = _categoryRepository.GetOne(id);
             if (categoryFromDb == null)
                 return BadRequest();
+            var books = _ebookRepository.GetEbooksByCategory(id);
+            foreach (var book in books)
+            {
+                book.CategoryId = 1;
+                _ebookRepository.Save(book);
+            }
             _categoryRepository.Delete(categoryFromDb);
             _categoryRepository.Complete();
+            _ebookRepository.Complete();
             return Ok();
 
         }

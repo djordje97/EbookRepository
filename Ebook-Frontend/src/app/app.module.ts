@@ -19,6 +19,7 @@ import { CategoryManagmentComponent } from './category-managment/category-managm
 import { UserManagmentComponent } from './user-managment/user-managment.component';
 import { BookManagmentComponent } from './book-managment/book-managment.component';
 import { DialogComponent } from './user-managment/dialog/dialog.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DialogComponent } from './user-managment/dialog/dialog.component';
     CategoryManagmentComponent,
     UserManagmentComponent,
     BookManagmentComponent,
-    DialogComponent
+    DialogComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,
