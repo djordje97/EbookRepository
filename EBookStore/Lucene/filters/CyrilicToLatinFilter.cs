@@ -15,11 +15,11 @@ namespace EBookStore.Lucene.filters
         public CyrilicToLatinFilter(TokenStream input):base(input)
         {
 
-            termAttribute = (CharTermAttribute)input.AddAttribute<CharTermAttribute>();
+            termAttribute = (CharTermAttribute)input.AddAttribute<ICharTermAttribute>();
 
         }
 
-        public override bool IncrementToken()
+        public sealed override bool IncrementToken()
         {
             if (m_input.IncrementToken())
             {

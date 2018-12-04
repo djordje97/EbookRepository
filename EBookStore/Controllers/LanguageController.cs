@@ -38,7 +38,7 @@ namespace EBookStore.Controllers
             return Ok(languagesDto);
         }
 
-        [HttpGet("{id}"),Authorize(Roles ="Admin")]
+        [HttpGet("{id}")]
         public IActionResult GetLanguage(int id)
         {
             var language = _languageRepository.GetOne(id);

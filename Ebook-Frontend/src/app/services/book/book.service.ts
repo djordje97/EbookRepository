@@ -35,4 +35,42 @@ export class BookService {
      formData.append(file.name,file);
      return this.http.post(this.url+"ebook/upload",formData,{headers:httpOptions.header,reportProgress:true});
   }
+
+  saveBook(indexUnit){
+    var head;
+    var tokenObject=JSON.parse(localStorage.getItem("token"));
+    if(tokenObject){
+      head={
+          "Authorization": "Bearer " +tokenObject.token,
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+
+      return this.http.post(this.url+"ebook",indexUnit,{headers:httpOptions.header});
+  }
+
+  indexBook(vievModel){
+    var head;
+    var tokenObject=JSON.parse(localStorage.getItem("token"));
+    if(tokenObject){
+      head={
+          "Authorization": "Bearer " +tokenObject.token,
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+    
+      return this.http.post(this.url+"ebook/save",vievModel,{headers:httpOptions.header});
+  }
 }

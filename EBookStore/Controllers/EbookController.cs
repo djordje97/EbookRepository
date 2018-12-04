@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using EBookStore.Lucene;
 using System.IO;
 using EBookStore.Configuration;
+using EBookStore.Lucene.Model;
 
 namespace EBookStore.Controllers
 {
@@ -22,12 +23,16 @@ namespace EBookStore.Controllers
         private readonly EbookRepository _ebookRepository;
 
         IMapper _mapper;
-        public EbookController(EbookRepository ebookRepository, IMapper mapper)
+        private readonly CategoryRepository _categoryRepository;
+        private readonly LanguageRepository _languageRepository;
+        private readonly UserRepository _userRepository;
+        public EbookController(EbookRepository ebookRepository, IMapper mapper,CategoryRepository categoryRepository,LanguageRepository languageRepository,UserRepository userRepository)
         {
             _ebookRepository = ebookRepository;
             _mapper = mapper;
-
-
+            _categoryRepository = categoryRepository;
+            _languageRepository = languageRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -53,15 +58,42 @@ namespace EBookStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddEbook([FromBody]EbookDto ebookDto)
+        public IActionResult AddEbook(IndexUnit indexUnit)
         {
-            if (ebookDto == null)
+            if (indexUnit == null)
                 return BadRequest();
-            var ebook = _mapper.Map<Ebook>(ebookDto);
+            var categoryId = int.Parse(indexUnit.Category);
+            var languageId = int.Parse(indexUnit.Language);
+            var language = _languageRepository.GetOne(languageId);
+            var category=_categoryRepository.GetOne(categoryId);
+            var keywords = string.Empty;
+            var username = User.Identity.Name;
+            var user = _userRepository.GetByUsername(username);
+            foreach (var item in indexUnit.Keywords)
+            {
+                keywords += item + " ";
+
+            }
+            var pathToCopy = Path.Combine(ConfigurationManager.FileDir, indexUnit.Filename);
+            var filePath= Path.Combine(ConfigurationManager.TempDir, indexUnit.Filename);
+            System.IO.File.Move(filePath, pathToCopy);
+            indexUnit.Filename = pathToCopy;
+            Ebook ebook = new Ebook()
+            {
+                Title = indexUnit.Title,
+                MIME = "application/json",
+                Author = indexUnit.Author,
+                Filename = indexUnit.Filename,
+                Category = category,
+                Language = language,
+                PublicationYear=int.Parse(indexUnit.FileDate),
+                Keywords=keywords,
+                User=user
+            };
             ebook = _ebookRepository.Save(ebook);
             _ebookRepository.Complete();
-
-            return Created(new Uri("http://localhost:12621/api/ebook/" + ebook.UserId), _mapper.Map<EbookDto>(ebook));
+            Indexer.index(indexUnit);
+            return Created(new Uri("http://localhost:12621/api/ebook/" + ebook.EbookId), _mapper.Map<EbookDto>(ebook));
         }
 
         [HttpPost("upload"), DisableRequestSizeLimit]
@@ -78,6 +110,7 @@ namespace EBookStore.Controllers
 
                 FileInfo fileInfo = new FileInfo(file.FileName);
                 var indexUnit = Indexer.GetIndexUnit(fileInfo);
+                indexUnit.Filename = file.Name;
                 return Ok(indexUnit);
 
             }
@@ -88,7 +121,7 @@ namespace EBookStore.Controllers
             }
         }
 
-
+       
         [HttpPut("{id}")]
         public IActionResult UpdateEbook(int id, [FromBody] EbookDto ebookDto)
         {

@@ -25,13 +25,18 @@ namespace EBookStore.Model
            var hasher = new PasswordHasher<User>();
             modelBuilder.Entity<Category>().HasData(
                  new Category() { CategoryId = 1, Name = "None" },
-                new Category() { CategoryId=2,Name="Comedy"});
+                new Category() { CategoryId=2,Name="Comedy"},
+                new Category() { CategoryId = 3, Name = "Drama" },
+                new Category() { CategoryId = 4, Name = "Science" });
             modelBuilder.Entity<User>().HasData(
                 new User() {UserId=1,Firstname="Marko",Lastname="Markovic",Username="marko",Password=hasher.HashPassword(null,"123"),Type="Admin",CategoryId=1 },
                 new User() { UserId = 2, Firstname = "Darko", Lastname = "Stankic", Username = "darko", Password = hasher.HashPassword(null, "123"), Type = "User", CategoryId = 1 }
                 );
            
-            modelBuilder.Entity<Language>().HasData(new Language() { LanguageId = 1, Name = "Serbian" });
+            modelBuilder.Entity<Language>().HasData(new Language() { LanguageId = 1, Name = "Serbian" },
+                new Language() { LanguageId = 2, Name = "English" },
+                new Language() { LanguageId = 3, Name = "Croatian" }
+                );
 
         }
     }

@@ -96,6 +96,37 @@ namespace EBookStore.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "None" },
+                    { 2, "Comedy" },
+                    { 3, "Drama" },
+                    { 4, "Science" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "LanguageId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Serbian" },
+                    { 2, "English" },
+                    { 3, "Croatian" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "CategoryId", "Firstname", "Lastname", "Password", "Type", "Username" },
+                values: new object[] { 1, 1, "Marko", "Markovic", "AQAAAAEAACcQAAAAEADUFnuXSrdXmVBDwwkIe15WbTCizY9PpDQ4jg+cq9+pjcT/wCe+q8xpPCEtFfTkPQ==", "Admin", "marko" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "CategoryId", "Firstname", "Lastname", "Password", "Type", "Username" },
+                values: new object[] { 2, 1, "Darko", "Stankic", "AQAAAAEAACcQAAAAEI+APyOy5vhpcIUm6ArYxcuT1m2U6mqGdV+EZuyFiEv/YVHs1No5HATXR8HPB55J8Q==", "User", "darko" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Ebooks_CategoryId",
                 table: "Ebooks",

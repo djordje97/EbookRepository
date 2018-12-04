@@ -24,7 +24,7 @@ namespace EBookStore.Model
         [StringLength(100)]
         public string MIME { get; set; }
 
-        public  virtual User Use { get; set; }
+        public  virtual User User { get; set; }
         public int UserId { get; set; }
         public virtual Category Category { get; set; }
         public int CategoryId { get; set; }

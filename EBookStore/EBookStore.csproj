@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="fileDir\" />
+    <Folder Include="indexDir\" />
+    <Folder Include="tempDir\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

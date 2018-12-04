@@ -28,7 +28,7 @@ namespace EBookStore.Lucene
         private static IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_48, analyzer);
         protected static IndexWriter indexWriter = new IndexWriter(indexDirectory, config);
 
-        public static void index(IndexUnit unit, string path)
+        public static void index(IndexUnit unit)
         {
 
             Document document = new Document();
@@ -87,7 +87,6 @@ namespace EBookStore.Lucene
                 }
 
                 unit.FileDate = DateTools.DateToString(file.LastAccessTime, DateTools.Resolution.DAY);
-                unit.Filename = file.FullName;
                 var text = string.Empty;
                 for (int i = 1; i < reader.NumberOfPages; i++)
                 {

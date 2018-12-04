@@ -27,14 +27,14 @@
                         <thead>
                             <tr>
                                 <th scope="col">Keyword</th>
-                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
                                 <th scope="col"><button class="btn btn-success" (click)="addKeyword()">Add new keyword</button></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let word of indexUnit.keywords">
                                 <td>{{word}}</td>
-                                <td><button class="btn btn-warning" name="{{word}}" (click)="editKeyword($event)">Edit</button></td>
+                                <td><button class="btn btn-danger" name="{{word}}" (click)="deleteKeyword($event)">Delete</button></td>
                             </tr>
                     </table>
                     <div class="form-field">
@@ -52,7 +52,7 @@
                             <mat-form-field>
                                 <mat-select name="language" #langeage="ngModel" placeholder="Select book language"
                                     [(ngModel)]="indexUnit.language"  required>
-                                    <mat-option *ngFor="let language of languages" [value]="language.name">
+                                    <mat-option *ngFor="let language of languages" [value]="language.languageId">
                                         {{language.name}}
                                     </mat-option>
                                 </mat-select>
@@ -65,7 +65,7 @@
                 <mat-error *ngIf="pdfError == true">
                     You can select PDF file only!
                 </mat-error>
-                <button mat-raised-button color="primary" (click)="add()" [disabled]="!f.valid" style="margin-left: 10%;margin-top: 2%;">Add</button>
+                <button mat-raised-button color="primary" (click)="addBook()" [disabled]="!f.valid" style="margin-left: 10%;margin-top: 2%;">Add</button>
             </form>
         </div>
     </div>

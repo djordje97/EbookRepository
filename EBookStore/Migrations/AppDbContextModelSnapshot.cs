@@ -34,7 +34,9 @@ namespace EBookStore.Migrations
 
                     b.HasData(
                         new { CategoryId = 1, Name = "None" },
-                        new { CategoryId = 2, Name = "Comedy" }
+                        new { CategoryId = 2, Name = "Comedy" },
+                        new { CategoryId = 3, Name = "Drama" },
+                        new { CategoryId = 4, Name = "Science" }
                     );
                 });
 
@@ -95,7 +97,9 @@ namespace EBookStore.Migrations
                     b.ToTable("Languages");
 
                     b.HasData(
-                        new { LanguageId = 1, Name = "Serbian" }
+                        new { LanguageId = 1, Name = "Serbian" },
+                        new { LanguageId = 2, Name = "English" },
+                        new { LanguageId = 3, Name = "Croatian" }
                     );
                 });
 
@@ -133,8 +137,8 @@ namespace EBookStore.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { UserId = 1, CategoryId = 1, Firstname = "Marko", Lastname = "Markovic", Password = "AQAAAAEAACcQAAAAEH07BVTixP4CRndI3496bymdZWTYRBn07B8XqtW4gKWS4Wk0sZzgycd9IV6YYvldhw==", Type = "Admin", Username = "marko" },
-                        new { UserId = 2, CategoryId = 1, Firstname = "Darko", Lastname = "Stankic", Password = "AQAAAAEAACcQAAAAED+taTt3FKCn9IBWlyjovonTgACz+FE+AbSy3JaDqyhAQytvABSPa/Z4SeFDeYekHg==", Type = "User", Username = "darko" }
+                        new { UserId = 1, CategoryId = 1, Firstname = "Marko", Lastname = "Markovic", Password = "AQAAAAEAACcQAAAAEADUFnuXSrdXmVBDwwkIe15WbTCizY9PpDQ4jg+cq9+pjcT/wCe+q8xpPCEtFfTkPQ==", Type = "Admin", Username = "marko" },
+                        new { UserId = 2, CategoryId = 1, Firstname = "Darko", Lastname = "Stankic", Password = "AQAAAAEAACcQAAAAEI+APyOy5vhpcIUm6ArYxcuT1m2U6mqGdV+EZuyFiEv/YVHs1No5HATXR8HPB55J8Q==", Type = "User", Username = "darko" }
                     );
                 });
 
@@ -150,7 +154,7 @@ namespace EBookStore.Migrations
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("EBookStore.Model.User", "Use")
+                    b.HasOne("EBookStore.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

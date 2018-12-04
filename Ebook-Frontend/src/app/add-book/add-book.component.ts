@@ -16,12 +16,17 @@ import { NgForm } from '@angular/forms';
 export class AddBookComponent implements OnInit {
   fileToUpload: File = null;
   indexUnit;
+  success=false;
   fileUploaded = false;
   pdfError = false;
   categories;
   languages;
   keywords = {
     'word': ''
+  };
+  viewModel={
+    'file':null,
+    'indexUnit':null
   };
   @ViewChild('f')ngform:NgForm;
   updatedArray=[];
@@ -72,31 +77,23 @@ export class AddBookComponent implements OnInit {
     });
   }
 
-  editKeyword(event) {
-    var text = event.target.name;
-    const dialogConfig = new MatDialogConfig();
-    this.keywords.word = text;
-    dialogConfig.data = {
-      title: 'Edit keyword',
-      isKeywordAdd: true,
-      keywords: this.keywords,
-      isCategoryAdd: false
+  deleteKeyword(event){
+    var text=event.target.name;
+    for (const element of this.indexUnit.keywords) {
+      if (element !== text && element !== '') {
+         this.updatedArray.push(element); 
+      }
     }
-    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == false)
-        return;
-      this.keywords.word = result;
-      console.log(this.indexUnit.keywords);
-     for (const element of this.indexUnit.keywords) {
-       if (element !== text) {
-          this.updatedArray.push(element); 
-       }
-     }
-     this.updatedArray.push(this.keywords.word);
-     this.indexUnit.keywords=this.updatedArray;
-      text="";
-      this.updatedArray=[];
-    });
+    this.indexUnit.keywords=this.updatedArray;
+    this.updatedArray=[];
+    text="";
+  }
+
+  addBook(){
+    console.log(this.indexUnit.filename);
+      this.bookService.saveBook(this.indexUnit).subscribe(result =>{
+            this.success=true;
+            this.ngform.reset();
+      });
   }
 }
