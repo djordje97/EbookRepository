@@ -1,27 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BookService {
-  
-   url="http://localhost:12621/api/";
-  constructor(private http:HttpClient){ }
- 
-  
-  
-  getAllBooks():Observable<any>{
-   return this.http.get(this.url+"ebook");
-  }
+export class LanguageService {
 
-  uploadBook(file:File):any{
+  url="http://localhost:12621/api/"
+  constructor(private http:HttpClient) { }
+
+  getAllLanguages(){
     var head;
     var tokenObject=JSON.parse(localStorage.getItem("token"));
     if(tokenObject){
       head={
           "Authorization": "Bearer " +tokenObject.token,
+          'Content-Type': 'application/json'
         };
       }else{
           head={
@@ -31,8 +25,7 @@ export class BookService {
      let  httpOptions= {
           header: new  HttpHeaders(head)
       };
-     let formData=new FormData();
-     formData.append(file.name,file);
-     return this.http.post(this.url+"ebook/upload",formData,{headers:httpOptions.header,reportProgress:true});
+      return this.http.get(this.url+"language",{headers:httpOptions.header});
   }
+
 }

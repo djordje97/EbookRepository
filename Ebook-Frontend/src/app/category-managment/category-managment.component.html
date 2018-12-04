@@ -1,25 +1,23 @@
 <app-nav></app-nav>
 <div class="container-fluid">
     <div class="row">
-           <div class="col-4">
-
-           </div>
-           <div class="col-4">
-
-            </div>
-            <div class="col-4">
-                    <button id="addCategory" style="float:right;margin-right:10%;" class="btn btn-success"  (click)="addCategory($event)">Add category</button>
-                </div>
-           
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+            <button id="addCategory" style="float:right;margin-right:10%;" class="btn btn-success" (click)="addCategory($event)">Add
+                category</button>
+        </div>
     </div>
-        <div class="row">
-            <div class="col-3" *ngFor="let category of categories">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{category.name}}</h5>
-                        <button href="#" class="btn btn-danger"  name="{{category.categoryId}}" (click)="deleteCategory($event)">Delete</button>
-                    </div>
+    <div class="row">
+        <div class="col-3" *ngFor="let category of categories">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{category.name}}</h5>
+                    <button href="#" class="btn btn-danger" name="{{category.categoryId}}" (click)="deleteCategory($event)">Delete</button>
                 </div>
             </div>
         </div>
     </div>
+</div>

@@ -8,6 +8,9 @@ using EBookStore.Model;
 using EBookStore.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using EBookStore.Lucene;
+using System.IO;
+using EBookStore.Configuration;
 
 namespace EBookStore.Controllers
 {
@@ -17,12 +20,14 @@ namespace EBookStore.Controllers
     {
 
         private readonly EbookRepository _ebookRepository;
+
         IMapper _mapper;
         public EbookController(EbookRepository ebookRepository, IMapper mapper)
         {
             _ebookRepository = ebookRepository;
             _mapper = mapper;
-            
+
+
         }
 
         [HttpGet]
@@ -58,6 +63,31 @@ namespace EBookStore.Controllers
 
             return Created(new Uri("http://localhost:12621/api/ebook/" + ebook.UserId), _mapper.Map<EbookDto>(ebook));
         }
+
+        [HttpPost("upload"), DisableRequestSizeLimit]
+        public IActionResult GetBooksData()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var filePath = Path.Combine(ConfigurationManager.TempDir, file.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                FileInfo fileInfo = new FileInfo(file.FileName);
+                var indexUnit = Indexer.GetIndexUnit(fileInfo);
+                return Ok(indexUnit);
+
+            }
+            catch (Exception e)
+            {
+                System.Console.Out.WriteLine(e.Message);
+                return BadRequest();
+            }
+        }
+
 
         [HttpPut("{id}")]
         public IActionResult UpdateEbook(int id, [FromBody] EbookDto ebookDto)

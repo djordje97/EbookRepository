@@ -9,6 +9,7 @@ import { UserManagmentComponent } from './user-managment/user-managment.componen
 import { CategoryManagmentComponent } from './category-managment/category-managment.component';
 import { BookManagmentComponent } from './book-managment/book-managment.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { AddBookComponent } from './add-book/add-book.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home' ,pathMatch: 'full'},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:'manage/categories',component:CategoryManagmentComponent},
   {path:'manage/books',component:BookManagmentComponent},
   {path:'edit/user/:username',component:EditUserComponent},
+  {path:'add/book',component:AddBookComponent},
 ];
 
 @NgModule({

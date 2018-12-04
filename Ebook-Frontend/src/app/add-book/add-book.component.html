@@ -1,0 +1,73 @@
+<app-nav></app-nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-6">
+            <form class="form" name="form" #f="ngForm">
+                <label for="file">Select book from your PC</label>
+                <div class="form-group">
+                    <div class="form-field">
+                        <input name="file" type="file" (change)="fileSelect($event)" required>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="fileUploaded == true">
+                    <mat-form-field class="form-field">
+                        <input matInput type="text" placeholder="Books title" (focus)="focus()" name="title" #title="ngModel"
+                            [(ngModel)]="indexUnit.title" required>
+                    </mat-form-field>
+                </div>
+                <div class="form-group" *ngIf="fileUploaded == true">
+                    <mat-form-field class="form-field">
+                        <input matInput type="text" placeholder="Books author" (focus)="focus()" name="author" #author="ngModel"
+                            [(ngModel)]="indexUnit.author" required>
+                    </mat-form-field>
+                </div>
+                <div class="form-group" *ngIf="fileUploaded == true">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Keyword</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col"><button class="btn btn-success" (click)="addKeyword()">Add new keyword</button></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let word of indexUnit.keywords">
+                                <td>{{word}}</td>
+                                <td><button class="btn btn-warning" name="{{word}}" (click)="editKeyword($event)">Edit</button></td>
+                            </tr>
+                    </table>
+                    <div class="form-field">
+                        <mat-form-field>
+                            <mat-select name="categoryId" #categoryId="ngModel" placeholder="Select book category"
+                                [(ngModel)]="indexUnit.category"  required>
+                                <mat-option *ngFor="let category of categories" [value]="category.categoryId">
+                                    {{category.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                            <mat-form-field>
+                                <mat-select name="language" #langeage="ngModel" placeholder="Select book language"
+                                    [(ngModel)]="indexUnit.language"  required>
+                                    <mat-option *ngFor="let language of languages" [value]="language.name">
+                                        {{language.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="success== true">
+                    Book added successiful!
+                </div>
+                <mat-error *ngIf="pdfError == true">
+                    You can select PDF file only!
+                </mat-error>
+                <button mat-raised-button color="primary" (click)="add()" [disabled]="!f.valid" style="margin-left: 10%;margin-top: 2%;">Add</button>
+            </form>
+        </div>
+    </div>
+    <div class="row"></div>
+</div>

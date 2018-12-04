@@ -4,9 +4,13 @@
   <mat-form-field *ngIf="data.isCategoryAdd == true">
       <input matInput [(ngModel)]="data.category.name" placeholder="Enter category name" required>
     </mat-form-field>
+    <mat-form-field *ngIf="data.isKeywordAdd == true">
+        <input matInput [(ngModel)]="data.keywords.word" placeholder="Enter keyword" required>
+      </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button class="btn btn-primary" [mat-dialog-close]="false">Cancel</button>
-  <button mat-button *ngIf="data.isCategoryAdd != true" class="btn btn-danger" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+  <button mat-button *ngIf="data.isCategoryAdd != true && data.isKeywordAdd != true" class="btn btn-danger" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
   <button *ngIf="data.isCategoryAdd == true" mat-button class="btn btn-success" [mat-dialog-close]="data.category.name"  cdkFocusInitial>Add</button>
+  <button *ngIf="data.isKeywordAdd == true" mat-button class="btn btn-success" [mat-dialog-close]="data.keywords.word"  cdkFocusInitial>Add</button>
 </mat-dialog-actions>

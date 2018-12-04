@@ -9,13 +9,8 @@ namespace EBookStore.Configuration
 {
     public static class ConfigurationManager
     {
-        public static IConfiguration AppSetting { get; }
-        static ConfigurationManager()
-        {
-            AppSetting = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
-                    .Build();
-        }
+        public static string IndexDir { get; } = @"C:\Users\Djole\source\repos\EbookRepository\EBookStore\indexDir\";
+        public static string FileDir { get; } = @"C:\Users\Djole\source\repos\EbookRepository\EBookStore\fileDir\";
+        public static string TempDir { get; } = @"C:\Users\Djole\source\repos\EbookRepository\EBookStore\tempDir\";
     }
 }

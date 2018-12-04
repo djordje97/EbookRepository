@@ -12,7 +12,7 @@ import { UserService } from './services/user/user.service';
 import{HttpClientModule} from '@angular/common/http'
 import { BookService } from './services/book/book.service';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
-import {MatButtonModule,MatInputModule,MatSelectModule,MatDialogModule} from '@angular/material';
+import {MatButtonModule,MatInputModule,MatSelectModule,MatDialogModule, MatTableModule} from '@angular/material';
 import { CategoryComponent } from './category/category.component';
 import { SearchComponent } from './search/search.component';
 import { CategoryManagmentComponent } from './category-managment/category-managment.component';
@@ -20,6 +20,7 @@ import { UserManagmentComponent } from './user-managment/user-managment.componen
 import { BookManagmentComponent } from './book-managment/book-managment.component';
 import { DialogComponent } from './user-managment/dialog/dialog.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { AddBookComponent } from './add-book/add-book.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     UserManagmentComponent,
     BookManagmentComponent,
     DialogComponent,
-    EditUserComponent
+    EditUserComponent,
+    AddBookComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatTableModule,
   ],
   providers: [UserService,BookService],
   bootstrap: [AppComponent],

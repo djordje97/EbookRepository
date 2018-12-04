@@ -12,6 +12,7 @@ export class DialogComponent implements OnInit {
   isCategoryAdd
   content;
   data;
+  isKeywordAdd;
   constructor( @Inject(MAT_DIALOG_DATA) dialogData) {
     this.data=dialogData;
     console.log(this.data);

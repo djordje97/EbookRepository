@@ -1,46 +1,46 @@
-﻿using com.sun.tools.doclets.@internal.toolkit;
-using EBookStore.Configuration;
+﻿using EBookStore.Configuration;
 using EBookStore.Lucene.analyzer;
 using EBookStore.Lucene.Model;
-using java.io;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Microsoft.Extensions.Configuration;
-using org.apache.pdfbox.pdfparser;
-using org.apache.pdfbox.pdmodel;
-using org.apache.pdfbox.util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Directory = Lucene.Net.Store.Directory;
+using TextField = Lucene.Net.Documents.TextField;
 using Version = Lucene.Net.Util.LuceneVersion;
 
 namespace EBookStore.Lucene
 {
     public class Indexer
     {
-       
-        private static Directory indexDirectory = FSDirectory.Open(ConfigurationManager.AppSetting["indexDir"]);
+
+        private static Directory indexDirectory = FSDirectory.Open(ConfigurationManager.IndexDir);
         private static Analyzer analyzer = new SerbianAnalyzer();
         private static IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_48, analyzer);
         protected static IndexWriter indexWriter = new IndexWriter(indexDirectory, config);
 
-        public static void index(IndexUnit unit,string path)
+        public static void index(IndexUnit unit, string path)
         {
-            
+
             Document document = new Document();
 
-            document.Add(new TextField("title",unit.Title,Field.Store.YES));
+            document.Add(new TextField("title", unit.Title, Field.Store.YES));
 
             foreach (var keyword in unit.Keywords)
             {
                 document.Add(new TextField("keyword", keyword, Field.Store.YES));
             }
 
-            document.Add(new StringField("filename",unit.Filename, Field.Store.YES));
+            document.Add(new StringField("filename", unit.Filename, Field.Store.YES));
             document.Add(new TextField("text", unit.Text, Field.Store.NO));
             document.Add(new TextField("filedate", unit.FileDate, Field.Store.YES));
             document.Add(new TextField("author", unit.Author, Field.Store.YES));
@@ -51,37 +51,55 @@ namespace EBookStore.Lucene
 
         }
 
-        public static IndexUnit GetIndexUnit(File file)
+        public static IndexUnit GetIndexUnit(FileInfo file)
         {
-            IndexUnit unit=new IndexUnit();
+            IndexUnit unit = new IndexUnit();
             try
             {
-                PDFParser parser = new PDFParser(new FileInputStream(file));
-                parser.parse();
-                PDDocument pdf = parser.getPDDocument();
-                PDDocumentInformation info = pdf.getDocumentInformation();
+                var filePath = ConfigurationManager.TempDir + file.Name;
+                Console.Out.WriteLine(filePath);
+                PdfReader reader = new PdfReader(filePath);
+                Dictionary<string, string> dict = reader.Info;
 
-                string title = "" + info.getTitle();
-                unit.Title = title;
-                string keywords = "" + info.getKeywords();
-                string[] splittedKeywords = keywords.Split(" ");
-                unit.Keywords = new List<string>();
-                foreach (var item in splittedKeywords)
+                string author = string.Empty;
+                if (dict.Keys.Contains("Author"))
                 {
-                    unit.Keywords.Add(item);
-
+                    author += reader.Info["Author"];
                 }
-                PDFTextStripper textStripper = new PDFTextStripper("utf-8");
-                string text = textStripper.getText(parser.getPDDocument());
-                unit.Text = text;
-                pdf.close();
+                unit.Author = author;
+                string title = string.Empty;
+                if (dict.Keys.Contains("Title"))
+                {
+                    title+= reader.Info["Title"];
+                }
+                unit.Title = title;
+                unit.Keywords = new List<string>();
+                if (dict.Keys.Contains("Keywords"))
+                {
+                    string keywords = "" + reader.Info["Keywords"];
+                    string[] splittedKeywords = keywords.Split(" ");
 
-                unit.FileDate = DateTools.DateToString(new DateTime(file.lastModified()), DateTools.Resolution.DAY);
+                    foreach (var item in splittedKeywords)
+                    {
+                        unit.Keywords.Add(item);
+
+                    }
+                }
+
+                unit.FileDate = DateTools.DateToString(file.LastAccessTime, DateTools.Resolution.DAY);
+                unit.Filename = file.FullName;
+                var text = string.Empty;
+                for (int i = 1; i < reader.NumberOfPages; i++)
+                {
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                    text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);
+                }
+                unit.Text = text.Replace('\n',' ').Trim();
                 return unit;
             }
-            catch (Exception){ System.Console.Out.WriteLine("Greska prilikom obrade PDF fajla"); return null; }
+            catch (Exception e) { Console.Out.WriteLine(e.Message); return null; }
 
-            
+
         }
 
 
@@ -94,9 +112,9 @@ namespace EBookStore.Lucene
                 indexWriter.Commit();
                 return true;
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                System.Console.Out.WriteLine("Greska: " + e.getMessage() + " na ovom mestu " + e.getStackTrace());
+                System.Console.Out.WriteLine("Greska: " + e.Message + " na ovom mestu " + e.StackTrace);
                 return false;
             }
         }
@@ -109,7 +127,7 @@ namespace EBookStore.Lucene
                 DirectoryReader reader = DirectoryReader.Open(indexDirectory);
                 IndexSearcher indexSearcher = new IndexSearcher(reader);
                 Query query = new TermQuery(new Term("filename", filename));
-                TopScoreDocCollector collector = TopScoreDocCollector.Create(10,true);
+                TopScoreDocCollector collector = TopScoreDocCollector.Create(10, true);
 
                 indexSearcher.Search(query, collector);
 
@@ -130,15 +148,15 @@ namespace EBookStore.Lucene
                         }
                         try
                         {
-                           
-                               indexWriter.UpdateDocument(new Term("filename", filename), doc);
-                               indexWriter.Commit();
-                                return true;
-                            
+
+                            indexWriter.UpdateDocument(new Term("filename", filename), doc);
+                            indexWriter.Commit();
+                            return true;
+
                         }
-                        catch (IOException e)
+                        catch (Exception e)
                         {
-                           System.Console.Out.WriteLine("Greska: " + e.getMessage()+" na ovom mestu "+e.getStackTrace());
+                            System.Console.Out.WriteLine("Greska: " + e.Message + " na ovom mestu " + e.StackTrace);
                             return false;
                         }
                     }
@@ -147,12 +165,12 @@ namespace EBookStore.Lucene
 
                 return false;
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                System.Console.Out.WriteLine("Greska: " + e.getMessage() + " na ovom mestu " + e.getStackTrace());
+                System.Console.Out.WriteLine("Greska: " + e.Message + " na ovom mestu " + e.StackTrace);
                 return false;
             }
         }
     }
-   
+
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using EBookStore.Configuration;
 using EBookStore.Model;
 using EBookStore.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,6 +46,7 @@ namespace EBookStore
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
+                
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
@@ -52,7 +54,7 @@ namespace EBookStore
                     ValidIssuer="mysite.com",
                     ValidAudience="mysite.com",
                     IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@3"))
-
+                    
             };
             });
 
