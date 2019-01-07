@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class CategoryService {
 
-  url="http://localhost:12621/api/";
+  url="http://localhost:5000/api/";
   constructor(private http:HttpClient) { }
 
   getCategories():any{
