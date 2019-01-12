@@ -18,23 +18,7 @@ export class UserService {
     return this.http.post(this.url+"/user",user);
   }
   getUser(username):any{
-      const tokenObject=JSON.parse(localStorage.getItem("token"));
-    var head;
-    if(tokenObject.token){
-      head={
-          "Authorization": "Bearer " + tokenObject.token,
-          'Content-Type': 'application/json'
-        };
-      }else{
-          head={
-              'Content-Type': 'application/json'
-          };
-      }
-     let  httpOptions= {
-          header: new  HttpHeaders(head)
-      };
-
-   return this.http.get(this.url+"user/"+username,{headers:httpOptions.header});
+   return this.http.get(this.url+"user/"+username);
   }
   getLogged(tokenObject):any{
     var head;

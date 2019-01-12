@@ -9,6 +9,7 @@ import { BookService } from '../services/book/book.service';
 })
 export class HomeComponent implements OnInit {
   books;
+  logged;
   constructor(private bookService:BookService) { }
 
   ngOnInit() {
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
       console.log(response);
       this.books=response;
     });
+    this.logged=JSON.parse(localStorage.getItem("logged"));
   }
 
 }
