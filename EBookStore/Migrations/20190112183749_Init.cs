@@ -12,7 +12,7 @@ namespace EBookStore.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -25,7 +25,7 @@ namespace EBookStore.Migrations
                 columns: table => new
                 {
                     LanguageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -38,7 +38,7 @@ namespace EBookStore.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Firstname = table.Column<string>(maxLength: 30, nullable: false),
                     Lastname = table.Column<string>(maxLength: 30, nullable: false),
                     Username = table.Column<string>(maxLength: 10, nullable: false),
@@ -62,7 +62,7 @@ namespace EBookStore.Migrations
                 columns: table => new
                 {
                     EbookId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(maxLength: 80, nullable: false),
                     Author = table.Column<string>(maxLength: 120, nullable: true),
                     Keywords = table.Column<string>(maxLength: 120, nullable: true),
@@ -81,19 +81,19 @@ namespace EBookStore.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ebooks_Languages_LanguageId",
                         column: x => x.LanguageId,
                         principalTable: "Languages",
                         principalColumn: "LanguageId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ebooks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -120,12 +120,12 @@ namespace EBookStore.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "CategoryId", "Firstname", "Lastname", "Password", "Type", "Username" },
-                values: new object[] { 1, 1, "Marko", "Markovic", "AQAAAAEAACcQAAAAEADUFnuXSrdXmVBDwwkIe15WbTCizY9PpDQ4jg+cq9+pjcT/wCe+q8xpPCEtFfTkPQ==", "Admin", "marko" });
+                values: new object[] { 1, 1, "Marko", "Markovic", "AQAAAAEAACcQAAAAEA0mckdFhMqPUGcS1vTqDawCZwBCLYPkqRJThNDASLwiJn5SzXd+2INZvf3veaIn2Q==", "Admin", "marko" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "CategoryId", "Firstname", "Lastname", "Password", "Type", "Username" },
-                values: new object[] { 2, 1, "Darko", "Stankic", "AQAAAAEAACcQAAAAEI+APyOy5vhpcIUm6ArYxcuT1m2U6mqGdV+EZuyFiEv/YVHs1No5HATXR8HPB55J8Q==", "User", "darko" });
+                values: new object[] { 2, 1, "Darko", "Stankic", "AQAAAAEAACcQAAAAEI3lHpxgC7O5W0h+bB3dGuk2T/m1gq18CjYEahhrH+bT4OzqsFE7cMgCAbsJzrpIpQ==", "User", "darko" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ebooks_CategoryId",

@@ -2,14 +2,13 @@
 using EBookStore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EBookStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20181204230601_Init")]
+    [Migration("20190112183749_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,14 +16,12 @@ namespace EBookStore.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("EBookStore.Model.Category", b =>
                 {
                     b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -45,8 +42,7 @@ namespace EBookStore.Migrations
             modelBuilder.Entity("EBookStore.Model.Ebook", b =>
                 {
                     b.Property<int>("EbookId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author")
                         .HasMaxLength(120);
@@ -87,8 +83,7 @@ namespace EBookStore.Migrations
             modelBuilder.Entity("EBookStore.Model.Language", b =>
                 {
                     b.Property<int>("LanguageId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -108,8 +103,7 @@ namespace EBookStore.Migrations
             modelBuilder.Entity("EBookStore.Model.User", b =>
                 {
                     b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("CategoryId");
 
@@ -139,8 +133,8 @@ namespace EBookStore.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { UserId = 1, CategoryId = 1, Firstname = "Marko", Lastname = "Markovic", Password = "AQAAAAEAACcQAAAAEADUFnuXSrdXmVBDwwkIe15WbTCizY9PpDQ4jg+cq9+pjcT/wCe+q8xpPCEtFfTkPQ==", Type = "Admin", Username = "marko" },
-                        new { UserId = 2, CategoryId = 1, Firstname = "Darko", Lastname = "Stankic", Password = "AQAAAAEAACcQAAAAEI+APyOy5vhpcIUm6ArYxcuT1m2U6mqGdV+EZuyFiEv/YVHs1No5HATXR8HPB55J8Q==", Type = "User", Username = "darko" }
+                        new { UserId = 1, CategoryId = 1, Firstname = "Marko", Lastname = "Markovic", Password = "AQAAAAEAACcQAAAAEA0mckdFhMqPUGcS1vTqDawCZwBCLYPkqRJThNDASLwiJn5SzXd+2INZvf3veaIn2Q==", Type = "Admin", Username = "marko" },
+                        new { UserId = 2, CategoryId = 1, Firstname = "Darko", Lastname = "Stankic", Password = "AQAAAAEAACcQAAAAEI3lHpxgC7O5W0h+bB3dGuk2T/m1gq18CjYEahhrH+bT4OzqsFE7cMgCAbsJzrpIpQ==", Type = "User", Username = "darko" }
                     );
                 });
 

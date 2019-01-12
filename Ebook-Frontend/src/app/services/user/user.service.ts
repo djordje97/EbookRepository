@@ -8,7 +8,7 @@ import { UserManagmentComponent } from 'src/app/user-managment/user-managment.co
 export class UserService {
 
   constructor(private http:HttpClient) { }
-  url="http://localhost:5000/api/"
+  url="http://localhost:12621/api/"
   login(user):any{
  
     return this.http.post(this.url+"auth/login",user)

@@ -36,7 +36,7 @@ namespace EBookStore
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper();
             
             services.AddScoped<LanguageRepository,LanguageRepositoryImp>();

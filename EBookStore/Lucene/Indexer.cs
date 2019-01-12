@@ -51,12 +51,12 @@ namespace EBookStore.Lucene
 
         }
 
-        public static IndexUnit GetIndexUnit(FileInfo file)
+        public static IndexUnit GetIndexUnit(string fileName)
         {
             IndexUnit unit = new IndexUnit();
             try
             {
-                var filePath = ConfigurationManager.TempDir + file.Name;
+                var filePath = ConfigurationManager.TempDir + fileName;
                 Console.Out.WriteLine(filePath);
                 PdfReader reader = new PdfReader(filePath);
                 Dictionary<string, string> dict = reader.Info;
@@ -86,7 +86,7 @@ namespace EBookStore.Lucene
                     }
                 }
 
-                unit.FileDate = DateTools.DateToString(file.LastAccessTime, DateTools.Resolution.DAY);
+                unit.FileDate = DateTools.DateToString(new FileInfo(fileName).LastAccessTime, DateTools.Resolution.DAY);
                 var text = string.Empty;
                 for (int i = 1; i < reader.NumberOfPages; i++)
                 {
@@ -94,6 +94,7 @@ namespace EBookStore.Lucene
                     text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);
                 }
                 unit.Text = text.Replace('\n',' ').Trim();
+    
                 return unit;
             }
             catch (Exception e) { Console.Out.WriteLine(e.Message); return null; }

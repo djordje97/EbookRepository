@@ -74,10 +74,7 @@ namespace EBookStore.Controllers
                 keywords += item + " ";
 
             }
-            var pathToCopy = Path.Combine(ConfigurationManager.FileDir, indexUnit.Filename);
-            var filePath= Path.Combine(ConfigurationManager.TempDir, indexUnit.Filename);
-            System.IO.File.Move(filePath, pathToCopy);
-            indexUnit.Filename = pathToCopy;
+
             Ebook ebook = new Ebook()
             {
                 Title = indexUnit.Title,
@@ -102,15 +99,16 @@ namespace EBookStore.Controllers
             try
             {
                 var file = Request.Form.Files[0];
-                var filePath = Path.Combine(ConfigurationManager.TempDir, file.FileName);
+                var filePath = Path.Combine(ConfigurationManager.FileDir, file.FileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
+                    stream.Close();
                 }
 
-                FileInfo fileInfo = new FileInfo(file.FileName);
-                var indexUnit = Indexer.GetIndexUnit(fileInfo);
+                var indexUnit = Indexer.GetIndexUnit(file.FileName);
                 indexUnit.Filename = file.Name;
+                
                 return Ok(indexUnit);
 
             }
