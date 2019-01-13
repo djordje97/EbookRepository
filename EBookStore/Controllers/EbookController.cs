@@ -104,6 +104,23 @@ namespace EBookStore.Controllers
             return File(fileBytes, "application/pdf", book.Filename);
         }
 
+
+        [HttpGet("category/{categoryId}")]
+        public IActionResult GetByCategory(int categoryId)
+        {
+            var books = _ebookRepository.GetAll();
+            var booksWithCategory = new List<EbookDto>();
+            foreach (var book in books)
+            {
+                if(book.CategoryId == categoryId)
+                {
+                    booksWithCategory.Add(_mapper.Map<EbookDto>(book));
+                }
+            }
+
+
+            return Ok(booksWithCategory);
+        }
         [HttpPost("upload"), DisableRequestSizeLimit]
         public IActionResult GetBooksData()
         {
