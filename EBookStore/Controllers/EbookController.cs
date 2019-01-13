@@ -93,6 +93,17 @@ namespace EBookStore.Controllers
             return Created(new Uri("http://localhost:12621/api/ebook/" + ebook.EbookId), _mapper.Map<EbookDto>(ebook));
         }
 
+        [HttpGet("download/{id}")]
+        public IActionResult DownloadBook(int id)
+        {
+            var book = _ebookRepository.GetOne(id);
+            string path = Path.Combine(ConfigurationManager.FileDir, book.Filename);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+
+
+            return File(fileBytes, "application/pdf", book.Filename);
+        }
+
         [HttpPost("upload"), DisableRequestSizeLimit]
         public IActionResult GetBooksData()
         {
@@ -136,6 +147,8 @@ namespace EBookStore.Controllers
             _ebookRepository.Complete();
             return Ok(_mapper.Map<EbookDto>(ebookFromDb));
         }
+
+
 
         [HttpDelete("{username}")]
         public IActionResult DeleteEbook(int id)

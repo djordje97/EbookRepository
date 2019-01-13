@@ -73,4 +73,22 @@ export class BookService {
     
       return this.http.post(this.url+"ebook/save",vievModel,{headers:httpOptions.header});
   }
+
+  downloadBook(bookId):any{
+    var head;
+    var tokenObject=JSON.parse(localStorage.getItem("token"));
+    if(tokenObject){
+      head={
+          "Authorization": "Bearer " +tokenObject.token,
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+    return this.http.get(this.url+"ebook/download/"+bookId,{headers:httpOptions.header,responseType:"blob",observe:'response'});
+  }
 }

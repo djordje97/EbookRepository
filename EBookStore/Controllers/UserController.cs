@@ -42,7 +42,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpGet("{username}")]
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult GetUser(string username)
         {
             var user = _userRepository.GetByUsername(username);

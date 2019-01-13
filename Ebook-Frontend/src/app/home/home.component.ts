@@ -20,4 +20,22 @@ export class HomeComponent implements OnInit {
     this.logged=JSON.parse(localStorage.getItem("logged"));
   }
 
+  downloadBook(event){
+    let bookId=event.target.id;
+    let filename=event.target.name;
+    console.log(bookId);
+    this.bookService.downloadBook(bookId).subscribe(response =>{
+      console.log(response.headers);
+      console.log("oo je : "+filename)
+      var url = window.URL.createObjectURL(response.body);
+      var a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove(); 
+    });
+  }
 }
