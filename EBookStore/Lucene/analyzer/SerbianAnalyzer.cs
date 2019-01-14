@@ -27,5 +27,6 @@ namespace EBookStore.Lucene.analyzer
             return new TokenStreamComponents(source, result);
         }
 
+
     }
 }

@@ -12,6 +12,7 @@ using EBookStore.Lucene;
 using System.IO;
 using EBookStore.Configuration;
 using EBookStore.Lucene.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EBookStore.Controllers
 {
@@ -94,6 +95,7 @@ namespace EBookStore.Controllers
         }
 
         [HttpGet("download/{id}")]
+        [Authorize]
         public IActionResult DownloadBook(int id)
         {
             var book = _ebookRepository.GetOne(id);
@@ -105,6 +107,16 @@ namespace EBookStore.Controllers
         }
 
 
+        [HttpPost("search")]
+        [AllowAnonymous]
+        public IActionResult Search(SearchModel searchModel)
+        {
+            var books = _ebookRepository.Search(searchModel);
+
+            return Ok(_mapper.Map<EbookDto>(books));
+
+
+        }
         [HttpGet("category/{categoryId}")]
         public IActionResult GetByCategory(int categoryId)
         {

@@ -1,1 +1,55 @@
 <app-nav></app-nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-8">
+            <form class="form" name="form" #f="ngForm">
+                <div class="form-group">
+                  <mat-form-field class="form-field">
+                    <input matInput type="text" style="display: inline;" placeholder="Search" [(ngModel)]="searchModel.input" name="input">
+                  </mat-form-field>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-8">
+            <div class="form-group">
+                
+                    <p style="display: inline;">Search by:</p>
+                            <select class="form-control" id="exampleFormControlSelect1" (change)="slecetFirstField($event)" style="display: inline;width: 25%;margin-left: 2%;">
+                              <option value="title">Title</option>
+                              <option value="author">Author</option>
+                              <option value="keywords">Keywords</option>
+                              <option value="content">Content</option>
+                              <option value="language">Language</option>
+                            </select>
+                            <p style="display: inline;margin-left: 2%;">Search type:</p>
+                            <select class="form-control" id="exampleFormControlSelect1" (change)="selectSearchType($event)" style="display: inline;width: 25%;margin-left: 2%;">
+                              <option value="simple">Simple</option>
+                              <option value="phrze">Phraze</option>
+                              <option value="boolean">Boolean</option>
+                            </select>
+            </div>
+            <div class="form-group" *ngIf="booleanShow == true">
+                <p style="display: inline;">Second field for boolean search:</p>
+                <select class="form-control" id="exampleFormControlSelect1" (change)="slecetSecondField($event)" style="display: inline;width: 25%;margin-left: 2%;">
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="keywords">Keywords</option>
+                    <option value="content">Content</option>
+                    <option value="language">Language</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="booleanShow == true">
+                <p style="display: inline;">Operation:</p>
+                <select class="form-control" id="exampleFormControlSelect1" (change)="selectOperation($event)" style="display: inline;width: 25%;margin-left: 2%;">
+                    <option value="and">And</option>
+                    <option value="or">Or</option>
+                </select>
+            </div>
+            <button mat-raised-button color="primary" style="margin-left: 2%;" (click)="search()" >Search</button>
+        </div>
+    </div>
+</div>
