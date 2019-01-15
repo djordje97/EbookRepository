@@ -39,6 +39,8 @@ namespace EBookStore.Repository
         {
             List<RequiredHighlight> highlights = new List<RequiredHighlight>();
             highlights.Add(new RequiredHighlight() { FieldName = searchModel.FirstField, Value = searchModel.Input });
+            if(searchModel.Type=="boolean")
+                highlights.Add(new RequiredHighlight() { FieldName = searchModel.SecondField, Value = searchModel.Input });
             Query query = QueryBuilder(searchModel);
             List<ResultData> results = GetResults(query, highlights);
             return results;
@@ -67,6 +69,25 @@ namespace EBookStore.Repository
                     phrase.Add(term);
                 }
                 query = phrase;
+            }
+            else
+            {
+                Term firstTerm = new Term(searchModel.FirstField, searchModel.Input);
+                Term secondTerm = new Term(searchModel.SecondField, searchModel.Input);
+                Query firstQuery = new TermQuery(firstTerm);
+                Query secondQuery = new TermQuery(secondTerm);
+                BooleanQuery booleanClauses = new BooleanQuery();
+                if(searchModel.Operation == "and")
+                {
+                    booleanClauses.Add(firstQuery, Occur.MUST);
+                    booleanClauses.Add(secondQuery, Occur.MUST);
+                }
+                else
+                {
+                    booleanClauses.Add(firstQuery, Occur.SHOULD);
+                    booleanClauses.Add(secondQuery, Occur.SHOULD);
+                }
+                query = booleanClauses;
             }
 
             return parser.Parse(query.ToString(searchModel.FirstField));
