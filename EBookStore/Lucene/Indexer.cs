@@ -56,7 +56,7 @@ namespace EBookStore.Lucene
             IndexUnit unit = new IndexUnit();
             try
             {
-                var filePath = ConfigurationManager.TempDir + fileName;
+                var filePath = ConfigurationManager.FileDir + fileName;
                 Console.Out.WriteLine(filePath);
                 PdfReader reader = new PdfReader(filePath);
                 Dictionary<string, string> dict = reader.Info;
@@ -88,7 +88,7 @@ namespace EBookStore.Lucene
 
                 unit.FileDate = DateTools.DateToString(new FileInfo(fileName).LastAccessTime, DateTools.Resolution.DAY);
                 var text = string.Empty;
-                for (int i = 1; i < reader.NumberOfPages; i++)
+                for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
                     ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
                     text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);

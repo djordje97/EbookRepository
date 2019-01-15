@@ -3,6 +3,8 @@ using EBookStore.Dto;
 using EBookStore.Lucene.analyzer;
 using EBookStore.Lucene.Model;
 using EBookStore.Model;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers.Classic;
@@ -33,37 +35,60 @@ namespace EBookStore.Repository
             return context.Ebooks.Where(x => x.CategoryId == categoryId).ToList();
         }
 
-        public List<Ebook> Search(SearchModel searchModel)
+        public List<ResultData> Search(SearchModel searchModel)
         {
-            List<Ebook> ebooks = new List<Ebook>();
-            if(searchModel.Type == "simple")
-            {
-                ebooks=SimpleSearch(searchModel);
-            }
-            return ebooks;
+            List<RequiredHighlight> highlights = new List<RequiredHighlight>();
+            highlights.Add(new RequiredHighlight() { FieldName = searchModel.FirstField, Value = searchModel.Input });
+            Query query = QueryBuilder(searchModel);
+            List<ResultData> results = GetResults(query, highlights);
+            return results;
         }
 
-        public List<Ebook> SimpleSearch(SearchModel searchModel)
+        public Query QueryBuilder(SearchModel searchModel)
         {
             QueryParser parser = new QueryParser(Version.LUCENE_48, searchModel.FirstField, analyzer);
             Query query = null;
-            Term term = new Term(searchModel.FirstField, searchModel.Input);
-            query = new TermQuery(term);
-           query=parser.Parse(query.ToString(searchModel.FirstField));
+            if(searchModel.Type == "simple")
+            {
+                Term term = new Term(searchModel.FirstField, searchModel.Input);
+                query = new TermQuery(term);
+            }else if(searchModel.Type == "fuzzy")
+            {
+                Term term = new Term(searchModel.FirstField, searchModel.Input);
+                query = new FuzzyQuery(term,1);
+            }else if(searchModel.Type == "phrase")
+            {
+                string[] values = searchModel.Input.Split(" ");
+                PhraseQuery phrase = new PhraseQuery();
+                foreach ( string word in values)
+                {
+
+                    Term term = new Term(searchModel.FirstField, word);
+                    phrase.Add(term);
+                }
+                query = phrase;
+            }
+
+            return parser.Parse(query.ToString(searchModel.FirstField));
+            
+        }
+
+        public List<ResultData> GetResults(Query query,List<RequiredHighlight> requiredHighlights)
+        {
             try
             {
                 Directory indexDir = new SimpleFSDirectory(ConfigurationManager.IndexDir);
                 DirectoryReader reader = DirectoryReader.Open(indexDir);
                 IndexSearcher isr = new IndexSearcher(reader);
                 TopScoreDocCollector collector = TopScoreDocCollector.Create(
-                        10,true);
+                        10, true);
 
-                List<Ebook> results = new List<Ebook>();
+                List<ResultData> results = new List<ResultData>();
 
-            isr.Search(query, collector);
+                isr.Search(query, collector);
                 ScoreDoc[] hits = collector.GetTopDocs().ScoreDocs;
 
-                Ebook ebook;
+                ResultData re;
                 Document doc;
                 Highlighter hi;
 
@@ -82,23 +107,34 @@ namespace EBookStore.Repository
                     string author = doc.Get("author");
                     int category = Int32.Parse(doc.Get("category"));
                     int language = Int32.Parse(doc.Get("language"));
-                    int publicationYear = Int32.Parse(doc.Get("filedate"));
                     string highlight = "";
-
-                    ebook = new Ebook()
+                    string text = GetDocumentText(location);
+                    foreach (var item in requiredHighlights)
                     {
-                        Title=title,
-                        Filename=location,
-                        Keywords=keywords,
-                        MIME="application/json",
-                        CategoryId=category,
-                        Author=author,
-                        LanguageId=language,
-                        PublicationYear=publicationYear,
-                        UserId=1
-                          
+                        hi = new Highlighter(new QueryScorer(query, reader, item.FieldName));
+                        try
+                        {
+                            highlight += hi.GetBestFragment(analyzer, item.FieldName,text );
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine(e.Message+"  on"+e.StackTrace);
+                        }
+
+                    }
+
+
+                    re = new ResultData()
+                    {
+                        Title = title,
+                        Filename = location,
+                        Keywords = keywords,
+                        CategoryId = category,
+                        Author = author,
+                        Highlight=highlight
                     };
-                    results.Add(ebook);
+                    results.Add(re);
                 }
                 reader.Dispose();
                 return results;
@@ -107,8 +143,22 @@ namespace EBookStore.Repository
             catch (Exception e)
             {
                 Console.WriteLine(e.Source);
-                return new List<Ebook>();
+                return new List<ResultData>();
             }
+        }
+
+        public  string GetDocumentText(string fileName)
+        {
+            var filePath = ConfigurationManager.FileDir + fileName;
+            PdfReader reader = new PdfReader(filePath);
+            var text = string.Empty;
+            for (int i = 1; i <= reader.NumberOfPages; i++)
+            {
+                ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);
+            }
+            reader.Close();
+            return text;
         }
     }
 }

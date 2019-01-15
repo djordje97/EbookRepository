@@ -8,6 +8,7 @@ import { BookService } from '../services/book/book.service';
 })
 export class SearchComponent implements OnInit {
 
+  books
   searchModel={
     'input':'',
     'firstField':'title',
@@ -47,7 +48,8 @@ export class SearchComponent implements OnInit {
   search(){
     console.log(this.searchModel);
     this.bookService.search(this.searchModel).subscribe(data=>{
-      alert("Success");
+      this.books=data;
+      console.log(data);
     })
   }
 } 

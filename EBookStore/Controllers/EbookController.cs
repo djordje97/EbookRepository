@@ -113,7 +113,7 @@ namespace EBookStore.Controllers
         {
             var books = _ebookRepository.Search(searchModel);
 
-            return Ok(_mapper.Map<EbookDto>(books));
+            return Ok(books);
 
 
         }
