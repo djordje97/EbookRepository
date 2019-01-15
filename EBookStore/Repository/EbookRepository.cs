@@ -11,6 +11,8 @@ namespace EBookStore.Repository
     public interface EbookRepository:IRepository<Ebook>
     {
         List<Ebook> GetEbooksByCategory(int categoryId);
+
+        Ebook GetEbookByFilename(string fileName);
         List<ResultData>Search(SearchModel searchModel);
     }
 }

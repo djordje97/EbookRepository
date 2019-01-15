@@ -94,11 +94,11 @@ namespace EBookStore.Controllers
             return Created(new Uri("http://localhost:12621/api/ebook/" + ebook.EbookId), _mapper.Map<EbookDto>(ebook));
         }
 
-        [HttpGet("download/{id}")]
+        [HttpGet("download/{filename}")]
         [Authorize]
-        public IActionResult DownloadBook(int id)
+        public IActionResult DownloadBook(string filename)
         {
-            var book = _ebookRepository.GetOne(id);
+            var book = _ebookRepository.GetEbookByFilename(filename);
             string path = Path.Combine(ConfigurationManager.FileDir, book.Filename);
             byte[] fileBytes = System.IO.File.ReadAllBytes(path);
 

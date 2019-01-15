@@ -21,10 +21,9 @@ export class HomeComponent implements OnInit {
   }
 
   downloadBook(event){
-    let bookId=event.target.id;
     let filename=event.target.name;
-    console.log(bookId);
-    this.bookService.downloadBook(bookId).subscribe(response =>{
+    console.log(filename);
+    this.bookService.downloadBook(filename).subscribe(response =>{
       console.log(response.headers);
       console.log("oo je : "+filename)
       var url = window.URL.createObjectURL(response.body);

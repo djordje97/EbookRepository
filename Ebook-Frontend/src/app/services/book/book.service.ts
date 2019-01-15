@@ -74,7 +74,7 @@ export class BookService {
       return this.http.post(this.url+"ebook/save",vievModel,{headers:httpOptions.header});
   }
 
-  downloadBook(bookId):any{
+  downloadBook(filename):any{
     var head;
     var tokenObject=JSON.parse(localStorage.getItem("token"));
     if(tokenObject){
@@ -89,7 +89,7 @@ export class BookService {
      let  httpOptions= {
           header: new  HttpHeaders(head)
       };
-    return this.http.get(this.url+"ebook/download/"+bookId,{headers:httpOptions.header,responseType:"blob",observe:'response'});
+    return this.http.get(this.url+"ebook/download/"+filename,{headers:httpOptions.header,responseType:"blob",observe:'response'});
   }
 
   getByCategory(categoryId){

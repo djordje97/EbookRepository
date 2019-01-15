@@ -181,5 +181,10 @@ namespace EBookStore.Repository
             reader.Close();
             return text;
         }
+
+        public Ebook GetEbookByFilename(string fileName)
+        {
+            return context.Ebooks.Where(x => x.Filename == fileName).SingleOrDefault();
+        }
     }
 }

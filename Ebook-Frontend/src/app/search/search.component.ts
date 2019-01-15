@@ -17,9 +17,11 @@ export class SearchComponent implements OnInit {
     'operation':'and'
   }
   booleanShow=false;
+  logged
   constructor( private bookService:BookService) { }
 
   ngOnInit() {
+    this.logged=JSON.parse(localStorage.getItem("logged"));
   }
 
   slecetFirstField(event){
@@ -51,5 +53,23 @@ export class SearchComponent implements OnInit {
       this.books=data;
       console.log(data);
     })
+  }
+  downloadBook(event){
+    let bookId=event.target.id;
+    let filename=event.target.name;
+    console.log(bookId);
+    this.bookService.downloadBook(filename).subscribe(response =>{
+      console.log(response.headers);
+      console.log("oo je : "+filename)
+      var url = window.URL.createObjectURL(response.body);
+      var a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove(); 
+    });
   }
 } 
