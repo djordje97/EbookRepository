@@ -24,7 +24,7 @@ export class UserManagmentComponent implements OnInit {
    const dialogConfig=new MatDialogConfig();
    dialogConfig.data={
      title:'Delete user',
-     content:'Are you realy want to delete this user'
+     content:'Are you really want to delete this user?'
    };
    const dialogRef=this.dialog.open(DialogComponent,dialogConfig);
    dialogRef.afterClosed().subscribe(result =>{

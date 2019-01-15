@@ -179,12 +179,13 @@ namespace EBookStore.Controllers
 
 
 
-        [HttpDelete("{username}")]
-        public IActionResult DeleteEbook(int id)
+        [HttpDelete("{filename}")]
+        public IActionResult DeleteEbook(string filename)
         {
-            var ebookFromDb = _ebookRepository.GetOne(id);
+            var ebookFromDb = _ebookRepository.GetEbookByFilename(filename);
             if (ebookFromDb == null)
                 return BadRequest();
+            _ebookRepository.DeleteIndexDocument(ebookFromDb.Filename);
             _ebookRepository.Delete(ebookFromDb);
             _ebookRepository.Complete();
             return Ok();

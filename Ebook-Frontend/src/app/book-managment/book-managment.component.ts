@@ -18,4 +18,14 @@ export class BookManagmentComponent implements OnInit {
     });
   }
 
+  delete(event){
+    var filename=event.target.name;
+    if(confirm("Are you really want to delete this book?")){
+      this.bookService.delete(filename).subscribe(data=>{
+        window.location.reload(true);
+      })
+    }else{
+      return;
+    }
+  }
 }

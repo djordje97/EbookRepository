@@ -1,5 +1,6 @@
 ﻿using EBookStore.Configuration;
 using EBookStore.Dto;
+using EBookStore.Lucene;
 using EBookStore.Lucene.analyzer;
 using EBookStore.Lucene.Model;
 using EBookStore.Model;
@@ -34,7 +35,8 @@ namespace EBookStore.Repository
         {
             return context.Ebooks.Where(x => x.CategoryId == categoryId).ToList();
         }
-
+         
+        
         public List<ResultData> Search(SearchModel searchModel)
         {
             List<RequiredHighlight> highlights = new List<RequiredHighlight>();
@@ -185,6 +187,24 @@ namespace EBookStore.Repository
         public Ebook GetEbookByFilename(string fileName)
         {
             return context.Ebooks.Where(x => x.Filename == fileName).SingleOrDefault();
+        }
+
+        public bool DeleteIndexDocument(string filename)
+        {
+            try
+            {
+                Indexer.Delete(filename);
+                var path = ConfigurationManager.FileDir + filename;
+                System.IO.FileInfo file = new System.IO.FileInfo(path);
+                file.Delete();
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 }

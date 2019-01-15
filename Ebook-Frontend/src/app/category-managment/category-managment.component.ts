@@ -45,7 +45,7 @@ export class CategoryManagmentComponent implements OnInit {
     const dialogConfig=new MatDialogConfig();
     dialogConfig.data={
       title:'Delete category',
-      content:'Are you realy want to delete this category'
+      content:'Are you really want to delete this category'
     };
     const dialogRef=this.dialog.open(DialogComponent,dialogConfig);
     dialogRef.afterClosed().subscribe(result =>{

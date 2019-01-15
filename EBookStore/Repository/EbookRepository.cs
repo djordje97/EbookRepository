@@ -14,5 +14,7 @@ namespace EBookStore.Repository
 
         Ebook GetEbookByFilename(string fileName);
         List<ResultData>Search(SearchModel searchModel);
+
+        bool DeleteIndexDocument(string filename);
     }
 }
