@@ -44,8 +44,8 @@ namespace EBookStore.Lucene
             document.Add(new TextField("text", unit.Text, Field.Store.NO));
             document.Add(new TextField("filedate", unit.FileDate, Field.Store.YES));
             document.Add(new TextField("author", unit.Author, Field.Store.YES));
-            document.Add(new TextField("category", unit.Category, Field.Store.YES));
-            document.Add(new TextField("language", unit.Language, Field.Store.YES));
+            document.Add(new TextField("category", unit.Category.ToString(), Field.Store.YES));
+            document.Add(new TextField("language", unit.Language.ToString(), Field.Store.YES));
             indexWriter.AddDocument(document);
             indexWriter.Commit();
 

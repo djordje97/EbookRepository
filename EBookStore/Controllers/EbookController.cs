@@ -13,6 +13,7 @@ using System.IO;
 using EBookStore.Configuration;
 using EBookStore.Lucene.Model;
 using Microsoft.AspNetCore.Authorization;
+using Lucene.Net.Index;
 
 namespace EBookStore.Controllers
 {
@@ -55,7 +56,17 @@ namespace EBookStore.Controllers
             var ebook = _ebookRepository.GetOne(id);
             if (ebook == null)
                 return NotFound();
-            return Ok(_mapper.Map<EbookDto>(ebook));
+            IndexUnit indexUnit = new IndexUnit()
+            {
+                Title = ebook.Title,
+                Category = ebook.CategoryId,
+                Author = ebook.Author,
+                FileDate = ebook.PublicationYear.ToString(),
+                Filename = ebook.Filename,
+                Language = ebook.LanguageId,
+                Keywords=ebook.Keywords.Trim().Split(" ").ToList()
+            };
+            return Ok(indexUnit);
         }
 
         [HttpPost]
@@ -63,8 +74,8 @@ namespace EBookStore.Controllers
         {
             if (indexUnit == null)
                 return BadRequest();
-            var categoryId = int.Parse(indexUnit.Category);
-            var languageId = int.Parse(indexUnit.Language);
+            var categoryId = indexUnit.Category;
+            var languageId = indexUnit.Language;
             var language = _languageRepository.GetOne(languageId);
             var category=_categoryRepository.GetOne(categoryId);
             var keywords = string.Empty;
@@ -160,18 +171,30 @@ namespace EBookStore.Controllers
         }
 
        
-        [HttpPut("{id}")]
-        public IActionResult UpdateEbook(int id, [FromBody] EbookDto ebookDto)
+        [HttpPut("{filename}")]
+        public IActionResult UpdateEbook(string filename, [FromBody] IndexUnit indexUnit)
         {
-            if (ebookDto == null)
+            if (indexUnit == null)
                 return BadRequest();
-            var ebookFromDb = _ebookRepository.GetOne(id);
+            var ebookFromDb = _ebookRepository.GetEbookByFilename(filename);
             if (ebookFromDb == null)
                 return BadRequest();
-            ebookFromDb.Title = ebookDto.Title;
-            ebookFromDb.Author = ebookFromDb.Author;
-            ebookFromDb.Keywords = ebookDto.Keywords;
-            ebookFromDb.MIME = ebookDto.MIME;
+            ebookFromDb.Title = indexUnit.Title;
+            ebookFromDb.Author = indexUnit.Author;
+            var keyword = string.Empty;
+            foreach (var item in indexUnit.Keywords)
+            {
+                keyword += item + " ";
+
+            }
+            ebookFromDb.Keywords = keyword;
+            ebookFromDb.LanguageId = indexUnit.Language;
+            ebookFromDb.CategoryId = indexUnit.Category;
+            indexUnit.FileDate = ebookFromDb.PublicationYear.ToString();
+
+            var isDocumentUpdated = _ebookRepository.UpdateIndexDocument(indexUnit);
+            if (isDocumentUpdated == false)
+                return BadRequest();
             ebookFromDb = _ebookRepository.Update(ebookFromDb);
             _ebookRepository.Complete();
             return Ok(_mapper.Map<EbookDto>(ebookFromDb));

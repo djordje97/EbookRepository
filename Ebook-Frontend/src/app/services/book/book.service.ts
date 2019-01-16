@@ -110,6 +110,24 @@ export class BookService {
         return this.http.get(this.url+"ebook/category/"+categoryId,{headers:httpOptions.header});
     
   }
+  getById(bookId){
+    var head;
+    var tokenObject=JSON.parse(localStorage.getItem("token"));
+    if(tokenObject){
+      head={
+          "Authorization": "Bearer " +tokenObject.token,
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+        return this.http.get(this.url+"ebook/"+bookId,{headers:httpOptions.header});
+    
+  }
 
   search(searchModel):any{
     var head;
@@ -146,4 +164,23 @@ export class BookService {
       };
     return this.http.delete(this.url+"ebook/"+filename,{headers:httpOptions.header});
   }
+
+  update(filename,indexUnit):any{
+    var head;
+    var tokenObject=JSON.parse(localStorage.getItem("token"));
+    if(tokenObject){
+      head={
+          "Authorization": "Bearer " +tokenObject.token,
+        };
+      }else{
+          head={
+              'Content-Type': 'application/json'
+          };
+      }
+     let  httpOptions= {
+          header: new  HttpHeaders(head)
+      };
+    return this.http.put(this.url+"ebook/"+filename,indexUnit,{headers:httpOptions.header});
+  }
+
 }

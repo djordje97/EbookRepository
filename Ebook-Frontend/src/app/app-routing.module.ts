@@ -10,6 +10,7 @@ import { CategoryManagmentComponent } from './category-managment/category-managm
 import { BookManagmentComponent } from './book-managment/book-managment.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AddBookComponent } from './add-book/add-book.component';
+import { EditBookComponent } from './edit-book/edit-book.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home' ,pathMatch: 'full'},
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path:'manage/categories',component:CategoryManagmentComponent},
   {path:'manage/books',component:BookManagmentComponent},
   {path:'edit/user/:username',component:EditUserComponent},
+  {path:'edit/book/:ebookId',component:EditBookComponent},
   {path:'add/book',component:AddBookComponent},
 ];
 

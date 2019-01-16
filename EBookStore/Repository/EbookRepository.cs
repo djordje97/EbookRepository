@@ -16,5 +16,7 @@ namespace EBookStore.Repository
         List<ResultData>Search(SearchModel searchModel);
 
         bool DeleteIndexDocument(string filename);
+
+        bool UpdateIndexDocument(IndexUnit indexUnit);
     }
 }

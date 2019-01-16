@@ -28,4 +28,9 @@ export class BookManagmentComponent implements OnInit {
       return;
     }
   }
+
+  edit(event){
+    var bookId=event.target.name;
+    alert(bookId);
+  }
 }

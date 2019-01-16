@@ -21,6 +21,7 @@ import { BookManagmentComponent } from './book-managment/book-managment.componen
 import { DialogComponent } from './user-managment/dialog/dialog.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AddBookComponent } from './add-book/add-book.component';
+import { EditBookComponent } from './edit-book/edit-book.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AddBookComponent } from './add-book/add-book.component';
     BookManagmentComponent,
     DialogComponent,
     EditUserComponent,
-    AddBookComponent
+    AddBookComponent,
+    EditBookComponent
   ],
   imports: [
     BrowserModule,

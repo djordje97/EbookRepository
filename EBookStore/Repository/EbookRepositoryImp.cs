@@ -172,16 +172,25 @@ namespace EBookStore.Repository
 
         public  string GetDocumentText(string fileName)
         {
-            var filePath = ConfigurationManager.FileDir + fileName;
-            PdfReader reader = new PdfReader(filePath);
-            var text = string.Empty;
-            for (int i = 1; i <= reader.NumberOfPages; i++)
+            try
             {
-                ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
-                text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);
+                var filePath = ConfigurationManager.FileDir + fileName;
+                PdfReader reader = new PdfReader(filePath);
+                var text = string.Empty;
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                {
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                    text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);
+                }
+                reader.Close();
+                return text;
             }
-            reader.Close();
-            return text;
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+                return string.Empty;
+            }
         }
 
         public Ebook GetEbookByFilename(string fileName)
@@ -203,6 +212,23 @@ namespace EBookStore.Repository
             {
 
                 Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool UpdateIndexDocument(IndexUnit indexUnit)
+        {
+            try
+            {
+                var text = GetDocumentText(indexUnit.Filename);
+                indexUnit.Text = text;
+                DeleteIndexDocument(indexUnit.Filename);
+                Indexer.index(indexUnit);
+                return true;
+            }
+            catch (Exception)
+            {
+
                 return false;
             }
         }
