@@ -10,12 +10,13 @@ import { CategoryService } from '../services/category/category.service';
 export class NavComponent implements OnInit {
   token=localStorage.getItem("token");
   categories;
+  logged;
   isAdmin=false;
   constructor(private router:Router,private categoryService:CategoryService) { }
 
   ngOnInit() {
-    var logged=JSON.parse(localStorage.getItem("logged"));
-    if(logged!= null && logged.type == "Admin")
+     this.logged=JSON.parse(localStorage.getItem("logged"));
+    if(this.logged!= null && this.logged.type == "Admin")
       this.isAdmin=true;
     this.categoryService.getCategories().subscribe(response =>{
         this.categories=response;

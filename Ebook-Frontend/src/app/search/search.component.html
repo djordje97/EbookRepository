@@ -43,6 +43,13 @@
                     <option value="language">Language</option>
                 </select>
             </div>
+
+            <div class="form-group" *ngIf="booleanShow == true">
+                <mat-form-field class="form-field">
+                  <input matInput type="text" style="display: inline;" placeholder="Search second field" [(ngModel)]="searchModel.secondInput" name="secondInput">
+                </mat-form-field>
+              </div>
+
             <div class="form-group" *ngIf="booleanShow == true">
                 <p style="display: inline;">Operation:</p>
                 <select class="form-control" id="exampleFormControlSelect1" (change)="selectOperation($event)" style="display: inline;width: 25%;margin-left: 2%;">
@@ -77,7 +84,7 @@
                                                             <h6 class="card-subtitle mb-2 text-muted">{{book.author}}</h6>
                                                             <p class="card-text">{{book.keywords}}</p>
                                                             <button  (click)="downloadBook($event)" name="{{book.filename}}" class="card-link" *ngIf="logged!= null && (logged.categoryId == book.categoryId || logged.categoryId ==1 || logged.type == Admin)">Download</button>
-                                                            <a href="#" class="card-link">Another link</a>
+                                                            <p *ngIf="logged == null"><b> You have to register for downloading a book!</b></p>
                                                     </div>
                                             </div>
                                             <!-- back content -->

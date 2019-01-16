@@ -14,7 +14,8 @@ export class SearchComponent implements OnInit {
     'firstField':'title',
     'secondField':'title',
     'type':'simple',
-    'operation':'and'
+    'operation':'and',
+    'secondInput':''
   }
   booleanShow=false;
   logged

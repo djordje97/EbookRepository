@@ -75,7 +75,7 @@ namespace EBookStore.Repository
             else
             {
                 Term firstTerm = new Term(searchModel.FirstField, searchModel.Input);
-                Term secondTerm = new Term(searchModel.SecondField, searchModel.Input);
+                Term secondTerm = new Term(searchModel.SecondField, searchModel.SecondInput);
                 Query firstQuery = new TermQuery(firstTerm);
                 Query secondQuery = new TermQuery(secondTerm);
                 BooleanQuery booleanClauses = new BooleanQuery();

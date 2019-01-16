@@ -12,6 +12,7 @@ namespace EBookStore.Dto
         public string SecondField { get; set; }
         public string Type { get; set; }
         public string Operation { get; set; }
+        public string SecondInput { get; set; }
 
     }
 }
