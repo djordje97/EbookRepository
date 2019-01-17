@@ -187,6 +187,10 @@ namespace EBookStore.Controllers
                 keyword += item + " ";
 
             }
+            if (keyword.Length >= 120)
+            {
+                keyword = keyword.Substring(0, 110);
+            }
             ebookFromDb.Keywords = keyword;
             ebookFromDb.LanguageId = indexUnit.Language;
             ebookFromDb.CategoryId = indexUnit.Category;

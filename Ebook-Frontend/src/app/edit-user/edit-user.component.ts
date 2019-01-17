@@ -17,6 +17,7 @@ export class EditUserComponent implements OnInit {
   confirmPassword:any={
 
   };
+  changePassword=false;
   dontMatchError=false;
   constructor(private userService:UserService,private router:ActivatedRoute,private navigate:Router) { }
 
@@ -31,6 +32,9 @@ export class EditUserComponent implements OnInit {
    
   }
 
+  onCheck(){
+    this.changePassword=!this.changePassword;
+  }
   matchPassword(event){
     console.log(this.confirmPassword);
   this.confirmPassword.password=event.target.value;
@@ -46,7 +50,7 @@ export class EditUserComponent implements OnInit {
   edit(){
     this.userService.editUser(this.user,this.user.username).subscribe(result=>{
        console.log(result);
-       this.navigate.navigate(['/manage/users'])
+       this.navigate.navigate(['/'])
     });
   }
 }

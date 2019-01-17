@@ -79,7 +79,7 @@ namespace EBookStore.Controllers
             if (userFromDb == null)
                 return BadRequest();
             userFromDb.Firstname = userDto.Firstname;
-            userFromDb.Lastname = userFromDb.Lastname;
+            userFromDb.Lastname = userDto.Lastname;
             userFromDb.Password = hasher.HashPassword(null, userDto.Password);
             userFromDb = _userRepository.Update(userFromDb);
             _userRepository.Complete();
