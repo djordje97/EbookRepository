@@ -12,9 +12,13 @@ namespace EBookStore.Repository
         private AppDbContext context;
         public LanguageRepositoryImp(AppDbContext dbContext) : base(dbContext)
         {
+            context = dbContext;
             
         }
 
-      
+        public Language GetByName(string name)
+        {
+            return context.Languages.Where(x => x.Name == name).SingleOrDefault();
+        }
     }
 }

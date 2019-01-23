@@ -15,7 +15,7 @@ namespace EBookStore.Lucene.Model
 
         public string Author { get; set; }
         public int Category { get; set; }
-        public int Language { get; set; }
+        public string Language { get; set; }
 
     }
 }

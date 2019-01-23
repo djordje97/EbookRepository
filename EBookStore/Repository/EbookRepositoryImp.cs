@@ -129,7 +129,7 @@ namespace EBookStore.Repository
                     string location = doc.Get("filename");
                     string author = doc.Get("author");
                     int category = Int32.Parse(doc.Get("category"));
-                    int language = Int32.Parse(doc.Get("language"));
+                    string language = doc.Get("language");
                     string highlight = "";
                     string text = GetDocumentText(location);
                     foreach (var item in requiredHighlights)
@@ -155,7 +155,8 @@ namespace EBookStore.Repository
                         Keywords = keywords,
                         CategoryId = category,
                         Author = author,
-                        Highlight=highlight
+                        Highlight=highlight,
+                        
                     };
                     results.Add(re);
                 }

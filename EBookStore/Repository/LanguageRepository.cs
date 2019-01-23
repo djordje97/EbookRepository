@@ -8,5 +8,6 @@ namespace EBookStore.Repository
 {
     public interface LanguageRepository:IRepository<Language>
     {
+        Language GetByName(string name);
     }
 }

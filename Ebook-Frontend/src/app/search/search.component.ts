@@ -50,6 +50,8 @@ export class SearchComponent implements OnInit {
 
   search(){
     console.log(this.searchModel);
+    if(this.searchModel.input === "")
+      return;
     this.bookService.search(this.searchModel).subscribe(data=>{
       this.books=data;
       console.log(data);

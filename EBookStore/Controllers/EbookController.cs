@@ -63,7 +63,7 @@ namespace EBookStore.Controllers
                 Author = ebook.Author,
                 FileDate = ebook.PublicationYear.ToString(),
                 Filename = ebook.Filename,
-                Language = ebook.LanguageId,
+                Language = _languageRepository.GetOne(ebook.LanguageId).Name,
                 Keywords=ebook.Keywords.Trim().Split(" ").ToList()
             };
             return Ok(indexUnit);
@@ -76,7 +76,7 @@ namespace EBookStore.Controllers
                 return BadRequest();
             var categoryId = indexUnit.Category;
             var languageId = indexUnit.Language;
-            var language = _languageRepository.GetOne(languageId);
+            var language = _languageRepository.GetByName(indexUnit.Language);
             var category=_categoryRepository.GetOne(categoryId);
             var keywords = string.Empty;
             var username = User.Identity.Name;
@@ -192,7 +192,7 @@ namespace EBookStore.Controllers
                 keyword = keyword.Substring(0, 110);
             }
             ebookFromDb.Keywords = keyword;
-            ebookFromDb.LanguageId = indexUnit.Language;
+            ebookFromDb.LanguageId = _languageRepository.GetByName(indexUnit.Language).LanguageId;
             ebookFromDb.CategoryId = indexUnit.Category;
             indexUnit.FileDate = ebookFromDb.PublicationYear.ToString();
 
