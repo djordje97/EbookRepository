@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UES.EbookRepository.BLL.Contract\UES.EbookRepository.BLL.Contract.csproj" />
+    <ProjectReference Include="..\UES.EbookRepository.BLL\UES.EbookRepository.BLL.csproj" />
+    <ProjectReference Include="..\UES.EbookRepository.DAL.Contract\UES.EbookRepository.DAL.Contract.csproj" />
+    <ProjectReference Include="..\UES.EbookRepository.DAL\UES.EbookRepository.DAL.csproj" />
+    <ProjectReference Include="..\UES.EbookRepository.Presentation\UES.EbookRepository.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>
