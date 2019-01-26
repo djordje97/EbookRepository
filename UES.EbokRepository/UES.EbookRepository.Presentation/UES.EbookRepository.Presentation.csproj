@@ -9,6 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
@@ -18,6 +20,7 @@
     <ProjectReference Include="..\UES.EbookRepository.BLL.Contract\UES.EbookRepository.BLL.Contract.csproj" />
     <ProjectReference Include="..\UES.EbookRepository.BLL\UES.EbookRepository.BLL.csproj" />
     <ProjectReference Include="..\UES.EbookRepository.DAL\UES.EbookRepository.DAL.csproj" />
+    <ProjectReference Include="..\UES.EbookRepository.IoC\UES.EbookRepository.IoC.csproj" />
   </ItemGroup>
 
 </Project>

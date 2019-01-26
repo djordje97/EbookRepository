@@ -13,7 +13,6 @@
     <ProjectReference Include="..\UES.EbookRepository.BLL\UES.EbookRepository.BLL.csproj" />
     <ProjectReference Include="..\UES.EbookRepository.DAL.Contract\UES.EbookRepository.DAL.Contract.csproj" />
     <ProjectReference Include="..\UES.EbookRepository.DAL\UES.EbookRepository.DAL.csproj" />
-    <ProjectReference Include="..\UES.EbookRepository.Presentation\UES.EbookRepository.Presentation.csproj" />
   </ItemGroup>
 
 </Project>

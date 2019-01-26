@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,11 +19,13 @@ using UES.EbookRepository.BLL.Contract.Contracts;
 using UES.EbookRepository.BLL.Managers;
 using UES.EbookRepository.DAL.Contract.Contracts;
 using UES.EbookRepository.DAL.Providers;
+using UES.EbookRepository.IoC;
 
 namespace UES.EbookRepository.Presentation
 {
     public class Startup
     {
+        public IContainer ApplicationContainer { get; private set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,22 +34,9 @@ namespace UES.EbookRepository.Presentation
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddScoped<ICategoryProvider,CategoryProvider>();
-            services.AddScoped<IUserProvider, UserProvider>();
-            services.AddScoped<ILanguageProvider, LanguageProvider>();
-            services.AddScoped<IEbookProvider, EbookProvider>();
-
-            services.AddScoped<IIndexManager, IndexManager>();
-            services.AddScoped<ICategoryManager, CategoryManager>();
-            services.AddScoped<IUserManager, UserManager>();
-            services.AddScoped<ILanguageManager, LanguageManager>();
-            services.AddScoped<IEbookManager, EbookManager>();
-
-
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
@@ -60,6 +51,11 @@ namespace UES.EbookRepository.Presentation
 
                 };
             });
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            this.ApplicationContainer= DependencyRegistry.RegisterDependencies(builder);
+            return new AutofacServiceProvider(this.ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
