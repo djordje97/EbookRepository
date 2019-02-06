@@ -17,6 +17,8 @@ using UES.EbookRepository.DAL.Contract.Contracts;
 using Lucene.Net.Documents;
 using Version = Lucene.Net.Util.LuceneVersion;
 using UES.EbookRepository.DAL.Contract.Entities;
+using System.IO;
+using Directory = Lucene.Net.Store.Directory;
 
 namespace UES.EbookRepository.BLL.Managers
 {
@@ -108,7 +110,13 @@ namespace UES.EbookRepository.BLL.Managers
             var book = _ebookProvider.GetById(id);
             var isDeleted=_indexManager.Delete(book.Filename);
             if (isDeleted)
+            {
+                string path = ConfigurationManager.FileDir + book.Filename;
+                FileInfo file = new FileInfo(path);
+                file.Delete();
                 _ebookProvider.Delete(id);
+            }
+                
             else
                 return;
         }
@@ -269,6 +277,7 @@ namespace UES.EbookRepository.BLL.Managers
                     text += PdfTextExtractor.GetTextFromPage(reader, i, strategy);
                 }
                 reader.Close();
+                reader.Dispose();
                 return text;
             }
             catch (Exception e)

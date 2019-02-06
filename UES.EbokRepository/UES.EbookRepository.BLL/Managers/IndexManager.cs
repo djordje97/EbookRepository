@@ -84,7 +84,7 @@ namespace UES.EbookRepository.BLL.Managers
                     }
                 }
 
-                unit.FileDate = DateTools.DateToString(new System.IO.FileInfo(fileName).LastAccessTime, DateTools.Resolution.DAY);
+                unit.FileDate = DateTools.DateToString(DateTime.Now.Date, DateTools.Resolution.DAY);
                 var text = string.Empty;
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
@@ -93,6 +93,8 @@ namespace UES.EbookRepository.BLL.Managers
                 }
                 unit.Text = text.Replace('\n', ' ').Trim();
 
+                reader.Close();
+                reader.Dispose();
                 return unit;
             }
             catch (Exception e) { Console.Out.WriteLine(e.Message); return null; }
